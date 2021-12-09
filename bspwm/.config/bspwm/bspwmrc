@@ -1,0 +1,54 @@
+#! /bin/sh
+
+# Workspaces
+bspc monitor -d 1 2 3 4 5 6 7
+
+
+# Autostarts
+pgrep -x sxhkd > /dev/null || sxhkd &
+nitrogen --restore &
+picom -b --experimental-backends &
+bash ~/.config/polybar/launch.sh --cuts &
+/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+numlockx &
+volnoti &
+#for keyboard layout
+setxkbmap -option grp:alt_shift_toggle us,ir &
+/usr/lib/xfce4/notifyd/xfce4-notifyd &
+xsetroot -cursor_name left_ptr &
+xautolock -time 10 -locker "betterlockscreen -l" -detectsleep &
+
+# Configs
+bspc config border_width         3
+bspc config window_gap		 15
+bspc config single_monocle       false
+bspc config focused_border_color "#045f84"
+bspc config split_ratio          0.5
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config border_radius	 10
+bspc config automatic_scheme	 spiral
+
+# Rules
+bspc rule -a qtwaw desktop=^1 follow=on
+bspc rule -a TelegramDesktop desktop=^1 follow=on
+bspc rule -a Alacritty desktop=^2 follow=on
+bspc rule -a LibreWolf desktop=^3 follow=on
+bspc rule -a firefox desktop=^3 follow=on
+bspc rule -a qutebrowser desktop=^3 follow=on
+bspc rule -a Pcmanfm desktop=^4 follow=on
+bspc rule -a Code desktop=^5 follow=on
+bspc rule -a Inkscape desktop=^6 follow=on
+bspc rule -a photoshop.exe desktop=^6 follow=on
+bspc rule -a Gimp-2.10 desktop=^6 follow=on
+bspc rule -a xfce4-setting-manager state=tiled
+bspc rule -a Pavucontrol state=floating
+bspc rule -a Xfce4-terminal state=floating
+bspc rule -a Joplin state=tiled
+bspc rule -a soha state=floating
+bspc rule -a SimpleScreenRecorder state=floating
+bspc rule -a Polkit-mate-authentication-agent-1 state=floating rectangle=700x300+0+0
+bspc rule -a qv2ray state=floating
+bspc rule -a Yad state=floating
+
+
