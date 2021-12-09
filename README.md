@@ -1,3 +1,9 @@
+# iMaaNor's Dotfiles
+
+This is my dot files that include bspwm and xmonad configs  
+
+And yes i use stow for managing my Dotfiles  
+
 ## Installation  
 For installation first clone this repo  
 
