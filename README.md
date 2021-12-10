@@ -3,6 +3,14 @@
 This is my dot files that include bspwm and xmonad configs  
 
 And yes i use stow for managing my Dotfiles  
+  
+  
+## Screenshots  
+Xmonad  
+![xmonad-screenshot](https://github.com/iMaaNor/dotfiles/blob/master/xmonad-screenshot.png)  
+Bspwm  
+![xmonad-screenshot](https://github.com/iMaaNor/dotfiles/blob/master/bspwm-screenshot.png)  
+  
 
 ## Installation  
 For installation first clone this repo *to your home directory*
