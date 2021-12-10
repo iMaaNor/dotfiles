@@ -9,7 +9,7 @@ And yes i use stow for managing my Dotfiles
 Xmonad  
 ![xmonad-screenshot](https://github.com/iMaaNor/dotfiles/blob/master/xmonad-screenshot.png)  
 Bspwm  
-![xmonad-screenshot](https://github.com/iMaaNor/dotfiles/blob/master/bspwm-screenshot.png)  
+![bspwm-screenshot](https://github.com/iMaaNor/dotfiles/blob/master/bspwm-screenshot.jpg)  
   
 
 ## Installation  
