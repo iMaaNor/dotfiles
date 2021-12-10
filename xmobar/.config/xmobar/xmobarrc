@@ -1,6 +1,5 @@
--- http://projects.haskell.org/xmobar/
--- I use Font Awesome 5 fonts in this config for unicode "icons".  On Arch Linux,
--- install this package from the AUR to get these fonts: otf-font-awesome-5-free
+
+-- Depend on Awesome 5 Free and Brands Font
 
 Config {font = "xft:Ubuntu:weight=bold:pixelsize=13:antialias=true:hinting=true"
        , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=13:antialias=true:hinting=true"

@@ -99,9 +99,9 @@ myFocusColor  = "#8be9fd"   -- Border color of focused windows
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
-myStartupHook :: X ()
+myStartupHook :: X ()  -- Startups
 myStartupHook = do
-    addScreenCorners [ (SCLowerRight, spawn "/home/imaan/.xmonad/rofi.sh windows")
+    addScreenCorners [ (SCLowerRight, spawn "/home/imaan/.xmonad/rofi.sh windows")  -- Set action of screen corner
                      ]
     spawnOnce "picom --experimental-backends &"
     spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
@@ -132,16 +132,15 @@ tall     = renamed [Replace "tall"]
            $ addTabs shrinkText myTabTheme
            $ subLayout [] (smartBorders Simplest)
            $ limitWindows 12
-           $ mySpacing 6 
+           $ mySpacing' 6 
            $ ResizableTall 1 (3/100) (1/2) []
 tabs     = renamed [Replace "tabs"]
-           -- I won't add spacing to this layout because it will
-           -- add spacing between window and tabs which looks bad.
            $ tabbed shrinkText myTabTheme
 
 threeCol = renamed [Replace "threeCol"] 
            $ magnifiercz' 1.7 
-	   $ ThreeColMid 1 (3/100) (1/2)
+           $ mySpacing' 4
+           $ ThreeColMid 1 (3/100) (1/2)
 
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
@@ -169,7 +168,7 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange  $ mkToggle (NBFULL ?? 
 
 
 -- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 "]
-myWorkspaces = [" chat ", " web ", " code ", " sys ", " vid ", " office ", " art "]
+myWorkspaces = [" chat ", " web ", " code ", " sys ", " vid ", " office ", " art "] 
 -- myWorkspaces = [" one ", " two ", " three ", " four ", " five ", " six ", " seven "]
 
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
@@ -179,10 +178,9 @@ clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
 
 myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
-     -- 'doFloat' forces a window to float.  Useful for dialog boxes and such.
-     -- using 'doShift ( myWorkspaces !! 0)' sends program to workspace 1!
-     -- I'm doing it this way because otherwise I would have to write out the full
-     -- name of my workspaces and the names would be very long if using clickable workspaces.
+  -- doFloat for forcing to float a window
+  -- viewShift for shift a window and focus on it
+  -- doShift for shift a window without focus
      [ 
        className =? "confirm"                       --> doFloat
      , className =? "file_progress"                 --> doFloat
@@ -198,7 +196,7 @@ myManageHook = composeAll
 
   -- Specific apps to appropriate workspace
      -- browsers
-     , className =? "Waterfox-classic"                     --> viewShift " web "
+     , className =? "Waterfox-classic"              --> viewShift " web "
      , className =? "qutebrowser"                   --> viewShift " web "
      -- code editors
      , className =? "VSCodium"                      --> doShift " code "
@@ -206,7 +204,7 @@ myManageHook = composeAll
      -- chat apps
      , className =? "TelegramDesktop"               --> doShift " chat "
      , className =? "discord"                       --> doShift " chat "
-     , className =? "Whatsapp-for-linux"    --> doShift " chat "
+     , className =? "whatsapp-nativefier-d40211"    --> doShift " chat "
 
      -- system apps
      , className =? "Pcmanfm"                       --> viewShift " sys "
@@ -219,7 +217,7 @@ myManageHook = composeAll
      , className =? "VirtualBox Manager"            --> doShift " office "
      , className =? "libreoffice-startcenter"       --> doShift " office "
 
-     -- CGI apps
+     -- art apps
      , className =? "Gimp-2.10"                     --> doShift " art "
      , className =? "Inkscape"                      --> doShift " art "
      , className =? "krita"                         --> doShift " art "
@@ -243,7 +241,7 @@ myConfig p = fullscreenSupport $ def
                                <+> serverModeEventHook
                                <+> serverModeEventHookF "XMONAD_PRINT" (io . putStrLn)
                                <+> docksEventHook
-			       <+> screenCornerEventHook
+                               <+> screenCornerEventHook
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
@@ -252,7 +250,7 @@ myConfig p = fullscreenSupport $ def
         , borderWidth        = myBorderWidth
         , normalBorderColor  = myNormColor
         , focusedBorderColor = myFocusColor
-	, focusFollowsMouse = False
+        , focusFollowsMouse = False
         , logHook = myLogHook p
         } `additionalKeysP` myKeys
 
@@ -286,26 +284,17 @@ myKeys =
         -- C  => Ctrl
         -- S  => Shift
         -- M1  => Super key/Windows key
-------------------------------------------------------------------------------------
-
--- 90% of these keybindings will work on most keyboard layouts
--- for full functionality your keyboard layout should be en-us
--- to set your keymap to en-us simply execute this command on your terminal
-
---                   setxkbmap us
-
-------------------------------------------------------------------------------------
 
     -- Xmonad
-          ("M-C-r", spawn "xmonad --recompile")                -- Recompiles xmonad
-        , ("M-S-r", spawn "xmonad --restart")                  -- Restarts xmonad
-        , ("M-S-q", io exitSuccess)                            -- Quits xmonad
-        , ("M-c", kill)                                        -- Kill focused
-	, ("C-M1-x", spawn "xkill")
-	, ("M-S-o", restart "/home/imaan/.local/bin/obtoxmd" True)
+          ("M-C-r", spawn "xmonad --recompile")                        -- Recompiles xmonad
+        , ("M-S-r", spawn "xmonad --restart")                          -- Restarts xmonad
+        , ("M-S-q", io exitSuccess)                           	       -- Quits xmonad
+        , ("M-c", kill)                       	              	       -- Kill focused
+	, ("C-M1-x", spawn "xkill")				       -- Run Xkill
+	, ("M-S-o", restart "/home/imaan/.local/bin/obtoxmd" True)     -- Magic (switch to openbox with windows of current workspace)
     
     -- Screen Locking
-        , ("M-p", spawn "i3lock-fancy ")
+        , ("M-p", spawn "i3lock-fancy ")	-- Lockscreen
 
     -- Run Prompt
     --  , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"") -- Dmenu
@@ -314,8 +303,9 @@ myKeys =
 
     -- Useful Programs
         , ("M-<Return>", spawn (myTerminal))    -- Terminal
-        , ("M-b", spawn myBrowser) -- Browser
-        , ("M-e", spawn "pcmanfm")
+        , ("M-b", spawn myBrowser)		-- Browser
+        , ("M-e", spawn "pcmanfm") 		-- Filemanager
+	, ("M-z", spawn "telegram-desktop") 	-- Telegram messenger
 
      -- Workspaces
         , ("M-.", nextWS)  -- Move to next workspace
@@ -327,7 +317,6 @@ myKeys =
 	, ("M-<Tab>", toggleWS) -- Move to recent workspace
 
     -- Floating windows
-    --  , ("M-f", sendMessage (T.Toggle "floats")) -- Toggles my 'floats' layout ( Should be reconfig!! )
         , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
         , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
 
@@ -371,31 +360,30 @@ myKeys =
         , ("<XF86AudioRaiseVolume>", spawn "/home/imaan/.xmonad/volume.sh up")    -- Raise Volume
         , ("<XF86AudioLowerVolume>", spawn "/home/imaan/.xmonad/volume.sh down")  -- Lower volume
         , ("<XF86AudioMute>", spawn "/home/imaan/.xmonad/volume.sh mute")         -- Mute volume
-	, ("<XF86Tools>", spawn "/home/imaan/.xmonad/headphone.sh")
+	, ("<XF86Tools>", spawn "/home/imaan/.xmonad/headphone.sh")		  -- Set Master channel between headphone and lineout
     
     -- Control music
-        , ("<XF86AudioPlay>", spawn "playerctl play-pause && notify-send -a 'Music Player' 'Pause/Play Music'")  -- Play/Pause music
-	, ("<XF86AudioNext>", spawn "playerctl next && notify-send -a 'Music Player' 'Next Music'")        -- Next music 
-	, ("<XF86AudioPrev>", spawn "playerctl previous && notify-send -a 'Music Player' 'Previous Music'")    -- Previous music
-	, ("<XF86AudioStop>", spawn "playerctl stop && notify-send -a 'Music Player' 'Stop Music'")        -- Stop music
+        , ("<XF86AudioPlay>", spawn "playerctl play-pause && notify-send -a 'Music Player' 'Pause/Play Music'")		-- Play/Pause music
+	, ("<XF86AudioNext>", spawn "playerctl next && notify-send -a 'Music Player' 'Next Music'")			-- Next music 
+	, ("<XF86AudioPrev>", spawn "playerctl previous && notify-send -a 'Music Player' 'Previous Music'")    		-- Previous music
+	, ("<XF86AudioStop>", spawn "playerctl stop && notify-send -a 'Music Player' 'Stop Music'")        		-- Stop music
 
     -- Keyboard backlight
-        , ("<Scroll_lock>", spawn "/home/imaan/.xmonad/kbdlight.sh")
+        , ("<Scroll_lock>", spawn "/home/imaan/.xmonad/kbdlight.sh") -- Turn on/off keyboard backlight script
 
     -- Screenshot
         , ("<Print>", spawn "spectacle -fb")              -- Full screenshot
-	, ("M-<Print>", spawn "spectacle -ab")  	        -- Focus window screenshot 
+	, ("M-<Print>", spawn "spectacle -ab") 	          -- Focus window screenshot 
 	, ("S-<Print>", spawn "spectacle -rb")            -- Select area screenshot
 
     -- Expressvpn
-	, ("M-<F8>", spawn "/home/imaan/.xmonad/expressvpn.sh")
+	, ("M-<F8>", spawn "/home/imaan/.xmonad/expressvpn.sh") -- Expressvpn script
 	]
 
 main :: IO ()
 main = do
-    -- Launching xmobar on monitor
+    -- Launching xmobar
     xmproc <- spawnPipe "xmobar ~/.config/xmobar/xmobarrc"
-    -- the xmonad, ya know...what the WM is named after!
     replace
     xmonad $ ewmh $ myConfig xmproc 
 
