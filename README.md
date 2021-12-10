@@ -5,15 +5,16 @@ This is my dot files that include bspwm and xmonad configs
 And yes i use stow for managing my Dotfiles  
 
 ## Installation  
-For installation first clone this repo  
+For installation first clone this repo *to your home directory*
 
 ```bash
-git clone https://github.com/iMaaNor/dotfiles.git
+git clone https://github.com/iMaaNor/dotfiles.git ~/dotfiles
 ```  
+
 Then enter the folder
 
 ```bash
-cd dotfiles
+cd ~/dotfiles
 ```  
 And use stow to symlink all configs
 
