@@ -2,10 +2,10 @@
 -- I use Font Awesome 5 fonts in this config for unicode "icons".  On Arch Linux,
 -- install this package from the AUR to get these fonts: otf-font-awesome-5-free
 
-Config {font = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=true"
-       , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
-                           , "xft:Font Awesome 5 Free Solid:pixelsize=12"
-                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+Config {font = "xft:Ubuntu:weight=bold:pixelsize=12.5:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=12.5:antialias=true:hinting=true"
+                           , "xft:Font Awesome 5 Free Solid:pixelsize=12.5"
+                           , "xft:Font Awesome 5 Brands:pixelsize=12.5"
                            ]
        , bgColor = "#282a36"
        , fgColor = "#50fa7b"
@@ -17,41 +17,43 @@ Config {font = "xft:Ubuntu:weight=bold:pixelsize=11:antialias=true:hinting=true"
        , iconRoot = "$HOME/.xmonad/xpm/"  -- default: "."
        , commands = [
                     -- Time and date
-                      Run Date "<fn=2>\xf017</fn> %r (%a %d %b)" "date" 10
+                      Run Date		"<fn=2>\xf017</fn> %r (%a %d %b)" "date" 10
                       -- Cpu usage in percent
-                    , Run Cpu ["-t", "<fn=2>\xf2db</fn> (<total>%)","-H","50","--high","red"] 20
+                    , Run Cpu		["-t", "<fn=2>\xf2db</fn> (<total>%)","-H","50","--high","red"] 20
                       -- Ram used number and percent
-                 -- , Run Memory ["-t", "<fn=2>\xf233</fn>  (<used>mb)","-H","6000","--high", "red"] 20
-		    , Run Com "echo" ["<fn=2>\xf233</fn>"] "memicon" 60
+                 -- , Run Memory	["-t", "<fn=2>\xf233</fn>  (<used>mb)","-H","6000","--high", "red"] 20
+		    , Run Com "echo"	["<fn=2>\xf233</fn>"] "memicon" 60
 		    , Run Com "/home/imaan/.xmonad/memory.sh" [] "memory" 20
 		      -- Show uptime of system
-		    , Run Uptime ["-t", "<fn=2>\xf35b</fn> <days>d <hours>h <minutes>m"] 20
+		    , Run Uptime 	["-t", "<fn=2>\xf35b</fn> <days>d <hours>h <minutes>m"] 20
 		      -- Disk free space
-		    , Run DiskU [("/", "<fn=2>\xf1c0</fn> <free>")] [] 20
+		    , Run DiskU		[("/", "<fn=2>\xf1c0</fn> <free>")] [] 20
 		      -- Set padding of trayer automatic
-                    , Run Com "/home/imaan/.config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20
+                    , Run Com 		"/home/imaan/.config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20
 		      -- Average temp of cpu cores 
 		    , Run MultiCoreTemp ["-t","<fn=2>\xf2c9</fn> <avg>°C",
                                          "-L", "60", "-H", "80",
                                          "-n", "yellow", "-h", "red",
                                          "--", "--mintemp", "20", "--maxtemp", "100"] 50
+		      -- Icon for volume
+		    , Run Com		"/home/imaan/.xmonad/icvolume.sh" [] "icvolume" 1
 		      -- Show volume
-		    , Run Volume "default" "Master" ["-t","<fn=2>\xf027</fn> <volume>%"] 1
+		    , Run Volume 	"default" "Master" ["-t","<volume>%"] 1
 		      -- Show keyboard layout
-		    , Run Kbd [("us","<fn=2>\xf11c</fn> US"), ("ir","<fn=2>\xf11c</fn> FA")]
+		    , Run Kbd 		[("us","<fn=2>\xf11c</fn> US"), ("ir","<fn=2>\xf11c</fn> FA")]
 		      -- Show updates for pacman
-		    , Run Com "/home/imaan/.xmonad/pacup.sh" [] "pacup" 60 
+		    , Run Com 		"/home/imaan/.xmonad/pacup.sh" [] "pacup" 60 
 		      -- Icon for pacup
-		    , Run Com "echo" ["<fn=2>\xf49e</fn>"] "icpacup" 60
+		    , Run Com 		"echo" ["<fn=2>\xf49e</fn>"] "icpacup" 60
 		      -- Show location of IP
-		    , Run Com "/home/imaan/.xmonad/location.sh" [] "location" 60
+		    , Run Com 		"/home/imaan/.xmonad/location.sh" [] "location" 60
 		      -- Icon for Location
-		    , Run Com "echo" ["<fn=2>\xf3c5</fn>"] "iclocation" 60
+		    , Run Com 		"echo" ["<fn=2>\xf3c5</fn>"] "iclocation" 60
 		      -- Icon for Arch Menu
-		    , Run Com "echo" [" <fn=3>\xf77b</fn> Arch "] "archlogo" 20
+		    , Run Com 		"echo" [" <fn=3>\xf77b</fn> Arch "] "archlogo" 20
                     , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " <action=`/home/imaan/.xmonad/rofi.sh mainmenu`><fc=#686de1>%archlogo%</fc></action> <fc=#666666>∫</fc> %UnsafeStdinReader%}%date%  <fc=#666666>∫</fc>  <action=`/home/imaan/.xmonad/expressvpn.sh`>%iclocation% %location%</action> {<action=`/home/imaan/.xmonad/kbdlayout.sh`><fc=#ff79c6>%kbd%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%memicon% %memory%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%cpu%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9>%uptime%</fc>  <fc=#666666>∫</fc> <action=`alacritty -e sudo pacman -Syu`><fc=#ff79c6>%icpacup% %pacup%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%disku%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%multicoretemp%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9>%default:Master%</fc>  %trayerpad%"
+       , template = " <action=`/home/imaan/.xmonad/rofi.sh mainmenu`><fc=#686de1>%archlogo%</fc></action> <fc=#666666>∫</fc> %UnsafeStdinReader%}%date%  <fc=#666666>∫</fc>  <action=`/home/imaan/.xmonad/expressvpn.sh`>%iclocation% %location%</action> {<action=`/home/imaan/.xmonad/kbdlayout.sh`><fc=#ff79c6>%kbd%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%memicon% %memory%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%cpu%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9>%uptime%</fc>  <fc=#666666>∫</fc> <action=`alacritty -e sudo pacman -Syu`><fc=#ff79c6>%icpacup% %pacup%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%disku%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%multicoretemp%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9><fn=2>%icvolume%</fn> %default:Master%</fc>  %trayerpad%"
        }

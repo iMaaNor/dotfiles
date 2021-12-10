@@ -374,10 +374,10 @@ myKeys =
 	, ("<XF86Tools>", spawn "/home/imaan/.xmonad/headphone.sh")
     
     -- Control music
-        , ("<XF86AudioPlay>", spawn "playerctl play-pause")  -- Play/Pause music
-	, ("<XF86AudioNext>", spawn "playerctl next")        -- Next music 
-	, ("<XF86AudioPrev>", spawn "playerctl previous")    -- Previous music
-	, ("<XF86AudioStop>", spawn "playerctl stop")        -- Stop music
+        , ("<XF86AudioPlay>", spawn "playerctl play-pause && notify-send -a 'Music Player' 'Pause/Play Music'")  -- Play/Pause music
+	, ("<XF86AudioNext>", spawn "playerctl next && notify-send -a 'Music Player' 'Next Music'")        -- Next music 
+	, ("<XF86AudioPrev>", spawn "playerctl previous && notify-send -a 'Music Player' 'Previous Music'")    -- Previous music
+	, ("<XF86AudioStop>", spawn "playerctl stop && notify-send -a 'Music Player' 'Stop Music'")        -- Stop music
 
     -- Keyboard backlight
         , ("<Scroll_lock>", spawn "/home/imaan/.xmonad/kbdlight.sh")
