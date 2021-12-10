@@ -25,5 +25,5 @@ stow *
 Or you can use this one-line code
 
 ```bash
-git clone https://github.com/iMaaNor/dotfiles.git && cd dotfiles && stow * 
+git clone https://github.com/iMaaNor/dotfiles.git ~/dotfiles && cd ~/dotfiles && stow * 
 ```  
