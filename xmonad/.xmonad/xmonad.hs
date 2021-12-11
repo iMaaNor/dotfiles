@@ -112,7 +112,6 @@ myStartupHook = do
     spawnOnce "~/.fehbg &"
     spawnOnce "volnoti &"
     spawnOnce "xautolock -time 10 -locker 'i3lock-fancy' -detectsleep &"
-    spawnOnce "pfetch &"
     setWMName "LG3D"
 
 --Makes setting the spacingRaw simpler to write. The spacingRaw module adds a configurable amount of space around windows.
