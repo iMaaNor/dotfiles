@@ -261,7 +261,7 @@ myLogHook h = do
                         , ppVisible = xmobarColor "#bd93f9" "" .clickable               -- Visible but not current workspace
                         , ppHidden = xmobarColor "#ff79c6" "" . wrap "*" "" .clickable  -- Hidden workspaces in xmobar
                         , ppHiddenNoWindows = xmobarColor "#778ED3" "" .clickable      -- Hidden workspaces (no windows)
-                        , ppTitle = xmobarColor "#8be9fd" "" . shorten 60     -- Title of active window in xmobar
+                        , ppTitle = xmobarColor "#8be9fd" "" . shorten 50     -- Title of active window in xmobar
                         , ppSep =  "<fc=#666666> ∫ </fc>"                     -- Separators in xmobar
                         , ppUrgent = xmobarColor "#FF5555" "" . wrap "!" "!"  -- Urgent workspace
                         , ppExtras  = [windowCount]                           -- # of windows current workspace
