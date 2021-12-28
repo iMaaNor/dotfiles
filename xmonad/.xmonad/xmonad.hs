@@ -103,6 +103,7 @@ myStartupHook :: X ()  -- Startups
 myStartupHook = do
     addScreenCorners [ (SCLowerRight, spawn "/home/imaan/.xmonad/rofi.sh windows")  -- Set action of screen corner
                      ]
+    spawnOnce "workrave &"
     spawnOnce "picom --experimental-backends &"
     spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
     spawnOnce "numlockx &"
@@ -192,6 +193,7 @@ myManageHook = composeAll
      , className =? "toolbar"                       --> doFloat
      , className =? "copyq"                         --> doFloat
      , title =? "Oracle VM VirtualBox Manager"      --> doFloat
+     , title =? "Dropdown"			    --> doFloat
 
   -- Specific apps to appropriate workspace
      -- browsers
@@ -214,7 +216,7 @@ myManageHook = composeAll
 
      -- office and virtualboxes
      , className =? "VirtualBox Manager"            --> doShift " office "
-     , className =? "libreoffice-startcenter"       --> doShift " office "
+     , className =? "libreoffice"       --> doShift " office "
 
      -- art apps
      , className =? "Gimp-2.10"                     --> doShift " art "
@@ -305,6 +307,7 @@ myKeys =
         , ("M-b", spawn myBrowser)		-- Browser
         , ("M-e", spawn "pcmanfm") 		-- Filemanager
 	, ("M-z", spawn "telegram-desktop") 	-- Telegram messenger
+	, ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown alacritty")	-- Dropdown Terminal
 
      -- Workspaces
         , ("M-.", nextWS)  -- Move to next workspace

@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting zsh-completions zsh-autosuggestions vi-mode)
+plugins=(git zsh-syntax-highlighting zsh-completions zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -114,7 +114,12 @@ alias todo=todo.sh
 alias pch="proxychains -q"
 alias ecron="EDITOR=nvim crontab -e"
 alias pacup="sudo pacman -Syu"
-alias psvirt="sudo systemctl start virtlogd && systemctl start libvirtd"
+alias startvirt="sudo systemctl start virtlogd && systemctl start libvirtd"
+alias stopvirt="sudo systemctl stop virtlogd && systemctl stop libvirtd"
+
+opvpn(){
+	sudo openvpn --config $1 --auth-user-pass pass.txt
+}
 
 # For Wallpaper styli.sh
 nwall(){
@@ -141,3 +146,5 @@ fi
 eval $(thefuck --alias)
 
 pfetch | lolcat -f
+
+# figlet -f larry3d  iMaaNor | lolcat -f
