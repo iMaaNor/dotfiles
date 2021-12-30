@@ -82,7 +82,7 @@ myModMask :: KeyMask
 myModMask = mod4Mask        -- Sets modkey to super/windows key
 
 myTerminal :: String
-myTerminal = "alacritty" -- Sets default terminal
+myTerminal = "kitty" -- Sets default terminal
 
 myBrowser :: String
 myBrowser = "qutebrowser"  -- Sets qutebrowser as browser
@@ -134,11 +134,12 @@ tall     = renamed [Replace "tall"]
            $ limitWindows 12
            $ mySpacing' 6 
            $ ResizableTall 1 (3/100) (1/2) []
+
 tabs     = renamed [Replace "tabs"]
            $ tabbed shrinkText myTabTheme
 
 threeCol = renamed [Replace "threeCol"] 
-           $ magnifiercz' 1.7 
+           $ magnifiercz' 1.4 
            $ mySpacing' 4
            $ ThreeColMid 1 (3/100) (1/2)
 
@@ -194,6 +195,7 @@ myManageHook = composeAll
      , className =? "copyq"                         --> doFloat
      , title =? "Oracle VM VirtualBox Manager"      --> doFloat
      , title =? "Dropdown"			    --> doFloat
+     , className =? "sleek"			    --> doFloat
 
   -- Specific apps to appropriate workspace
      -- browsers
@@ -305,9 +307,11 @@ myKeys =
     -- Useful Programs
         , ("M-<Return>", spawn (myTerminal))    -- Terminal
         , ("M-b", spawn myBrowser)		-- Browser
-        , ("M-e", spawn "pcmanfm") 		-- Filemanager
+        , ("M-e", spawn "kitty --class=Pcmanfm nnn -e") 	-- Filemanager nnn
+        , ("M-S-e", spawn "pcmanfm") 		-- Filemanager pcmanfm
 	, ("M-z", spawn "telegram-desktop") 	-- Telegram messenger
-	, ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown alacritty")	-- Dropdown Terminal
+	, ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown kitty")	-- Dropdown Terminal
+	, ("<F10>", spawn "tdrop -w 70% -x 15% -h 50% sleek")	-- Dropdown Sleek
 
      -- Workspaces
         , ("M-.", nextWS)  -- Move to next workspace
