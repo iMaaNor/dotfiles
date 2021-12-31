@@ -307,7 +307,7 @@ myKeys =
     -- Useful Programs
         , ("M-<Return>", spawn (myTerminal))    -- Terminal
         , ("M-b", spawn myBrowser)		-- Browser
-        , ("M-e", spawn "kitty --class=Pcmanfm nnn -e") 	-- Filemanager nnn
+        , ("M-e", spawn "kitty --class=Pcmanfm nnn -ea") 	-- Filemanager nnn
         , ("M-S-e", spawn "pcmanfm") 		-- Filemanager pcmanfm
 	, ("M-z", spawn "telegram-desktop") 	-- Telegram messenger
 	, ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown kitty")	-- Dropdown Terminal

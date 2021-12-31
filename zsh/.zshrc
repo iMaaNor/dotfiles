@@ -116,9 +116,9 @@ alias todo=todo.sh
 alias pch="proxychains -q"
 alias ecron="EDITOR=nvim crontab -e"
 alias pacup="sudo pacman -Syu"
-alias startvirt="sudo systemctl start virtlogd && systemctl start libvirtd"
-alias stopvirt="sudo systemctl stop virtlogd && systemctl stop libvirtd"
-alias n="tmux -c 'nnn -ea'"
+alias startvirt="sudo systemctl start {virtlogd,libvirtd}"
+alias stopvirt="sudo systemctl stop {virtlogd,libvirtd,virtlogd-admin.socket,virtlogd.socket,libvirtd-ro.socket,libvirtd-admin.socket,libvirtd.socket}"
+alias n="nnn -ea"
 
 
 # For Transfer.sh alias

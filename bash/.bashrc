@@ -8,5 +8,5 @@
 # export EDITOR=nvim
 
 alias ls='ls --color=auto'
-alias nnn='nnn -e'
+alias n='nnn -ea'
 PS1='[\u@\h \W]\$ '
