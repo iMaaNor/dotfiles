@@ -71,7 +71,7 @@ settings:
   fonts.completion.category:
     global: bold default_size default_family
   qt.force_software_rendering:
-    global: qt-quick
+    global: software-opengl
   statusbar.show:
     global: always
   tabs.show:

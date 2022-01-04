@@ -208,6 +208,7 @@ myManageHook = composeAll
      , className =? "TelegramDesktop"               --> doShift " chat "
      , className =? "discord"                       --> doShift " chat "
      , className =? "whatsapp-nativefier-d40211"    --> doShift " chat "
+     , className =? "Element"                       --> doShift " chat "
 
      -- system apps
      , className =? "Pcmanfm"                       --> viewShift " sys "
@@ -379,7 +380,7 @@ myKeys =
 
     -- Screenshot
         , ("<Print>", spawn "spectacle -fb")              -- Full screenshot
-	, ("M-<Print>", spawn "spectacle -ab") 	          -- Focus window screenshot 
+	, ("C-<Print>", spawn "spectacle -ab") 	          -- Focus window screenshot 
 	, ("S-<Print>", spawn "spectacle -rb")            -- Select area screenshot
 
     -- Expressvpn

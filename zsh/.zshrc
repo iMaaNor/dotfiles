@@ -119,6 +119,7 @@ alias pacup="sudo pacman -Syu"
 alias startvirt="sudo systemctl start {virtlogd,libvirtd}"
 alias stopvirt="sudo systemctl stop {virtlogd,libvirtd,virtlogd-admin.socket,virtlogd.socket,libvirtd-ro.socket,libvirtd-admin.socket,libvirtd.socket}"
 alias n="nnn -ea"
+alias noisereload="bash /home/imaan/.local/bin/echoCancelEnable.sh"
 
 
 # For Transfer.sh alias
