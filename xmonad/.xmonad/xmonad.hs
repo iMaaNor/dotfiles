@@ -88,7 +88,7 @@ myBrowser :: String
 myBrowser = "qutebrowser"  -- Sets qutebrowser as browser
 
 myBorderWidth :: Dimension
-myBorderWidth = 2           -- Sets border width for windows
+myBorderWidth = 3           -- Sets border width for windows
 
 myNormColor :: String
 myNormColor   = "#6272a4"   -- Border color of normal windows
@@ -103,7 +103,7 @@ myStartupHook :: X ()  -- Startups
 myStartupHook = do
     addScreenCorners [ (SCLowerRight, spawn "/home/imaan/.xmonad/rofi.sh windows")  -- Set action of screen corner
                      ]
-    spawnOnce "workrave &"
+  --  spawnOnce "workrave &"
     spawnOnce "picom --experimental-backends &"
     spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
     spawnOnce "numlockx &"
@@ -113,6 +113,7 @@ myStartupHook = do
     spawnOnce "~/.fehbg &"
     spawnOnce "volnoti &"
     spawnOnce "xautolock -time 10 -locker 'i3lock-fancy' -detectsleep &"
+    spawnOnce "glava"
     setWMName "LG3D"
 
 --Makes setting the spacingRaw simpler to write. The spacingRaw module adds a configurable amount of space around windows.
@@ -226,6 +227,7 @@ myManageHook = composeAll
      , className =? "Inkscape"                      --> doShift " art "
      , className =? "krita"                         --> doShift " art "
      , className =? "kdenlive"                      --> doShift " art "
+     , appName =? "Lunacy"                          --> doShift " art "
 
 
      -- Float dialogs
