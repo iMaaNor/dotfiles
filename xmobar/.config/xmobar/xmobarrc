@@ -19,10 +19,10 @@ Config {font = "xft:Ubuntu:weight=bold:pixelsize=13:antialias=true:hinting=true"
                       Run Date		"<fn=2>\xf017</fn> %r (%a %d %b)" "date" 10
                       -- Cpu usage in percent
                     , Run Cpu		["-t", "<fn=2>\xf2db</fn> (<total>%)","-H","50","--high","red"] 20
-                      -- Ram used number and percent
-                 -- , Run Memory	["-t", "<fn=2>\xf233</fn>  (<used>mb)","-H","6000","--high", "red"] 20
+                      -- Memory Icon
 		    , Run Com "echo"	["<fn=2>\xf233</fn>"] "memicon" 60
-		    , Run Com "/home/imaan/.xmonad/memory.sh" [] "memory" 20
+		      -- Memory usage
+		    , Run Com 		"/home/imaan/.xmonad/memory.sh" [] "memory" 60 
 		      -- Show uptime of system
 		    , Run Uptime 	["-t", "<fn=2>\xf35b</fn> <days>d <hours>h <minutes>m"] 20
 		      -- Disk free space
@@ -54,5 +54,5 @@ Config {font = "xft:Ubuntu:weight=bold:pixelsize=13:antialias=true:hinting=true"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " <action=`/home/imaan/.xmonad/rofi.sh mainmenu`><fc=#686de1>%archlogo%</fc></action> <fc=#666666>∫</fc> %UnsafeStdinReader%}%date%  <fc=#666666>∫</fc>  <action=`/home/imaan/.xmonad/expressvpn.sh`>%iclocation% %location%</action> {<action=`/home/imaan/.xmonad/kbdlayout.sh`><fc=#ff79c6>%kbd%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%memicon% %memory%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%cpu%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9>%uptime%</fc>  <fc=#666666>∫</fc> <action=`kitty sudo pacman -Syu`><fc=#ff79c6>%icpacup% %pacup%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%disku%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%multicoretemp%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9><action=`pamixer -t`><fn=2>%icvolume%</fn> %default:Master%</action></fc>  %trayerpad%"
+       , template = " <action=`/home/imaan/.xmonad/rofi.sh mainmenu`><fc=#686de1>%archlogo%</fc></action> <fc=#666666>∫</fc> %UnsafeStdinReader%}%date%  {<action=`/home/imaan/.xmonad/kbdlayout.sh`><fc=#ff79c6>%kbd%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%memicon% %memory%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%cpu%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9>%uptime%</fc>  <fc=#666666>∫</fc> <action=`kitty sudo pacman -Syu`><fc=#ff79c6>%icpacup% %pacup%</fc></action>  <fc=#666666>∫</fc>  <fc=#bd93f9>%disku%</fc>  <fc=#666666>∫</fc>  <fc=#ff79c6>%multicoretemp%</fc>  <fc=#666666>∫</fc>  <fc=#bd93f9><action=`pamixer -t`><fn=2>%icvolume%</fn> %default:Master%</action></fc>  %trayerpad%"
        }
