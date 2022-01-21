@@ -15,7 +15,7 @@ import Control.Monad (liftM2)           -- For viewshift
 import XMonad.Actions.CopyWindow (kill1)
 import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextWS, prevWS, toggleWS)
 import XMonad.Actions.GridSelect
-import XMonad.Actions.MouseResize
+-- import XMonad.Actions.MouseResize
 import XMonad.Actions.Promote
 import XMonad.Actions.RotSlaves (rotSlavesDown, rotAllDown)
 import XMonad.Actions.WindowGo (runOrRaise)
@@ -37,11 +37,10 @@ import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, Toggl
 import XMonad.Hooks.ServerMode
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.WorkspaceHistory
-import XMonad.Hooks.ScreenCorners -- For screencorner actions like KDE
 
     -- Layouts
 import XMonad.Layout.Accordion
-import XMonad.Layout.GridVariants (Grid(Grid))
+-- import XMonad.Layout.GridVariants (Grid(Grid))
 import XMonad.Layout.SimplestFloat
 import XMonad.Layout.Spiral
 import XMonad.Layout.ResizableTile
@@ -49,6 +48,7 @@ import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns 
 import XMonad.Layout.Magnifier
 import XMonad.Layout.Fullscreen (fullscreenSupport)
+import XMonad.Layout.Grid
 
     -- Layouts modifiers
 import XMonad.Layout.LayoutModifier
@@ -94,15 +94,13 @@ myNormColor :: String
 myNormColor   = "#6272a4"   -- Border color of normal windows
 
 myFocusColor :: String
-myFocusColor  = "#8be9fd"   -- Border color of focused windows
+myFocusColor  = "#ff5ffc"   -- Border color of focused windows
 
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
 myStartupHook :: X ()  -- Startups
 myStartupHook = do
-    addScreenCorners [ (SCLowerRight, spawn "/home/imaan/.xmonad/rofi.sh windows")  -- Set action of screen corner
-                     ]
   --  spawnOnce "workrave &"
     spawnOnce "picom --experimental-backends &"
     spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
@@ -136,6 +134,15 @@ tall     = renamed [Replace "tall"]
            $ mySpacing' 6 
            $ ResizableTall 1 (3/100) (1/2) []
 
+mirrortall     = renamed [Replace "mirror tall"]
+           $ smartBorders
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 12
+           $ mySpacing' 6 
+           $ Mirror (ResizableTall 1 (3/100) (1/2) [])
+
+
 tabs     = renamed [Replace "tabs"]
            $ tabbed shrinkText myTabTheme
 
@@ -164,10 +171,9 @@ myShowWNameTheme = def
     }
 
 -- The layout hook
-myLayoutHook = avoidStruts $ mouseResize $ windowArrange  $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ hiddenWindows $ screenCornerLayoutHook $ myDefaultLayout
+myLayoutHook = avoidStruts $ windowArrange  $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ hiddenWindows $ myDefaultLayout
              where
-               myDefaultLayout = withBorder myBorderWidth tall ||| noBorders tabs ||| withBorder myBorderWidth threeCol
-
+               myDefaultLayout = withBorder myBorderWidth tall ||| withBorder myBorderWidth mirrortall ||| noBorders tabs ||| withBorder myBorderWidth threeCol
 
 -- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 "]
 myWorkspaces = [" chat ", " web ", " code ", " sys ", " vid ", " office ", " art "] 
@@ -247,7 +253,6 @@ myConfig p = fullscreenSupport $ def
                                <+> serverModeEventHook
                                <+> serverModeEventHookF "XMONAD_PRINT" (io . putStrLn)
                                <+> docksEventHook
-                               <+> screenCornerEventHook
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
@@ -386,7 +391,7 @@ myKeys =
 	, ("S-<Print>", spawn "spectacle -rb")            -- Select area screenshot
 
     -- Expressvpn
-	, ("M-<F8>", spawn "/home/imaan/.xmonad/expressvpn.sh") -- Expressvpn script
+     -- , ("M-<F8>", spawn "/home/imaan/.xmonad/expressvpn.sh") -- Expressvpn script
 	]
 
 main :: IO ()
