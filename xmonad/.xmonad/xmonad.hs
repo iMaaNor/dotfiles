@@ -40,7 +40,6 @@ import XMonad.Hooks.WorkspaceHistory
 
     -- Layouts
 import XMonad.Layout.Accordion
--- import XMonad.Layout.GridVariants (Grid(Grid))
 import XMonad.Layout.SimplestFloat
 import XMonad.Layout.Spiral
 import XMonad.Layout.ResizableTile
@@ -49,6 +48,8 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Magnifier
 import XMonad.Layout.Fullscreen (fullscreenSupport)
 import XMonad.Layout.Grid
+import XMonad.Layout.Reflect
+
 
     -- Layouts modifiers
 import XMonad.Layout.LayoutModifier
@@ -171,7 +172,7 @@ myShowWNameTheme = def
     }
 
 -- The layout hook
-myLayoutHook = avoidStruts $ windowArrange  $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ hiddenWindows $ myDefaultLayout
+myLayoutHook = avoidStruts $ windowArrange $ mkToggle (single REFLECTX) $ mkToggle (single REFLECTY) $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ hiddenWindows $ myDefaultLayout
              where
                myDefaultLayout = withBorder myBorderWidth tall ||| withBorder myBorderWidth mirrortall ||| noBorders tabs ||| withBorder myBorderWidth threeCol
 
@@ -201,8 +202,10 @@ myManageHook = composeAll
      , className =? "toolbar"                       --> doFloat
      , className =? "copyq"                         --> doFloat
      , title =? "Oracle VM VirtualBox Manager"      --> doFloat
+     , title =? "Virtual Machine Manager"           --> doFloat
      , title =? "Dropdown"			    --> doFloat
      , className =? "sleek"			    --> doFloat
+     , className =? "Mate-calc"			    --> doFloat
 
   -- Specific apps to appropriate workspace
      -- browsers
@@ -226,7 +229,8 @@ myManageHook = composeAll
 
      -- office and virtualboxes
      , className =? "VirtualBox Manager"            --> doShift " office "
-     , className =? "libreoffice"       --> doShift " office "
+     , className =? "Virt-manager"                  --> doShift " office "
+     , className =? "libreoffice"                   --> doShift " office "
 
      -- art apps
      , className =? "Gimp-2.10"                     --> doShift " art "
@@ -352,6 +356,8 @@ myKeys =
 	, ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
   	, ("M-S-h", withFocused hideWindow)           -- Hide focused window
   	, ("M-C-h", popOldestHiddenWindow)           -- Show hidden window
+	, ("M-C-<Space>", sendMessage $ MT.Toggle REFLECTX)  -- Reflect horiz
+	, ("M-M1-<Space>", sendMessage $ MT.Toggle REFLECTY)  -- Reflect vert
 
     -- Layouts
         , ("M-<Esc>", sendMessage NextLayout)           -- Switch to next layout
