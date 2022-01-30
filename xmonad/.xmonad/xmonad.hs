@@ -396,8 +396,9 @@ myKeys =
 	, ("C-<Print>", spawn "spectacle -ab") 	          -- Focus window screenshot 
 	, ("S-<Print>", spawn "spectacle -rb")            -- Select area screenshot
 
-    -- Expressvpn
+    -- Utilities
      -- , ("M-<F8>", spawn "/home/imaan/.xmonad/expressvpn.sh") -- Expressvpn script
+        , ("M-<F5>", spawn "/home/imaan/.xmonad/configs.sh") -- Edit configs dmenu
 	]
 
 main :: IO ()
