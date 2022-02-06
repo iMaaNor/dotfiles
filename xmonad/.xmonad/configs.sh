@@ -1,15 +1,15 @@
 #!/bin/bash
 
-select=$(echo -e "Xmonad Config\nXmobar Config\nQutebrowser Config" | dmenu)
+select=$(echo -e "Xmonad\nXmobar\nQutebrowser" | dmenu)
 
 case $select in
-"Xmonad Config")
+"Xmonad")
 kitty -e nvim /home/imaan/.xmonad/xmonad.hs
 ;;
-"Xmobar Config")
+"Xmobar")
 kitty -e nvim /home/imaan/.config/xmobar/xmobarrc
 ;;
-"Qutebrowser Config")
+"Qutebrowser")
 kitty -e nvim /home/imaan/.config/qutebrowser/config.py
 ;;
 esac

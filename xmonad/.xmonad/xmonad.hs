@@ -209,7 +209,7 @@ myManageHook = composeAll
 
   -- Specific apps to appropriate workspace
      -- browsers
-     , className =? "Waterfox-classic"              --> viewShift " web "
+     , className =? "firefox"              --> viewShift " web "
      , className =? "qutebrowser"                   --> viewShift " web "
      -- code editors
      , className =? "VSCodium"                      --> doShift " code "
