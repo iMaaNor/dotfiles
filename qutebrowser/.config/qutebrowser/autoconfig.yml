@@ -75,9 +75,9 @@ settings:
   qt.force_software_rendering:
     global: qt-quick
   statusbar.show:
-    global: in-mode
+    global: always
   tabs.show:
-    global: switching
+    global: always
   url.searchengines:
     global:
       DEFAULT: https://duckduckgo.com/?q={}
