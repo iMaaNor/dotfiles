@@ -69,7 +69,7 @@ settings:
   content.private_browsing:
     global: false
   content.proxy:
-    global: socks://127.0.0.1:1089
+    global: system
   fonts.completion.category:
     global: bold default_size default_family
   qt.force_software_rendering:
