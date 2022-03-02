@@ -78,7 +78,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-syntax-highlighting zsh-completions zsh-autosuggestions)
-
+ 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -170,7 +170,6 @@ eval $(thefuck --alias)
 source /usr/share/doc/find-the-command/ftc.zsh 
 
 pfetch | lolcat -f
-
 # figlet -f larry3d  iMaaNor | lolcat -f
 
 #figlet -f larry3d -w 200 "W i k i l i n u x f a" | lolcat -f

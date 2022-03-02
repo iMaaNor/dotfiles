@@ -48,7 +48,7 @@ settings:
           ;; spawn notify-send "Saved to TODO list"
         po: 'set-cmd-text -s :open -p '
   colors.webpage.darkmode.algorithm:
-    global: lightness-cielab
+    global: brightness-rgb
   colors.webpage.darkmode.enabled:
     global: false
   colors.webpage.darkmode.grayscale.all:
@@ -58,7 +58,7 @@ settings:
   colors.webpage.darkmode.policy.images:
     global: smart
   content.autoplay:
-    global: true
+    global: false
   content.blocking.enabled:
     global: true
   content.geolocation:
@@ -69,7 +69,7 @@ settings:
   content.private_browsing:
     global: false
   content.proxy:
-    global: system
+    global: socks://127.0.0.1:1089
   fonts.completion.category:
     global: bold default_size default_family
   qt.force_software_rendering:
