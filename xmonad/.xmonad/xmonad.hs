@@ -103,6 +103,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 myStartupHook :: X ()  -- Startups
 myStartupHook = do
   --  spawnOnce "workrave &"
+    spawnOnce "/home/imaan/.xmonad/resolution.sh"
     spawnOnce "picom --experimental-backends &"
     spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
     spawnOnce "numlockx &"
