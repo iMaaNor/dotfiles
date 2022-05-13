@@ -89,7 +89,7 @@ myBrowser :: String
 myBrowser = "qutebrowser"  -- Sets qutebrowser as browser
 
 myBorderWidth :: Dimension
-myBorderWidth = 3           -- Sets border width for windows
+myBorderWidth = 0           -- Sets border width for windows
 
 myNormColor :: String
 myNormColor   = "#6272a4"   -- Border color of normal windows
@@ -325,7 +325,6 @@ myKeys =
         , ("M-S-e", spawn "pcmanfm") 		-- Filemanager pcmanfm
 	, ("M-z", spawn "telegram-desktop") 	-- Telegram messenger
 	, ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown kitty")	-- Dropdown Terminal
-	, ("<F10>", spawn "tdrop -w 70% -x 15% -h 50% sleek")	-- Dropdown Sleek
 
      -- Workspaces
         , ("M-.", nextWS)  -- Move to next workspace
@@ -402,6 +401,7 @@ myKeys =
      -- , ("M-<F8>", spawn "/home/imaan/.xmonad/expressvpn.sh") -- Expressvpn script
         , ("M-<F5>", spawn "/home/imaan/.xmonad/configs.sh") -- Edit configs dmenu
 	]
+
 
 main :: IO ()
 main = do
