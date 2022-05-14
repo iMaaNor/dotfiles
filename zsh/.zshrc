@@ -167,10 +167,6 @@ fi
 # Thefuck magnificent
 eval $(thefuck --alias)
 
-# Find the command
-source /usr/share/doc/find-the-command/ftc.zsh 
+# pfetch | lolcat -f
 
-pfetch | lolcat -f
-# figlet -f larry3d  iMaaNor | lolcat -f
-
-#figlet -f larry3d -w 200 "W i k i l i n u x f a" | lolcat -f
+# figlet -f larry3d -w 200 "W i k i l i n u x f a" | lolcat -f
