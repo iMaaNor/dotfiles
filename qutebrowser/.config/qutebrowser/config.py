@@ -171,6 +171,7 @@ config.bind(',K', 'set colors.webpage.darkmode.enabled false ;; set colors.webpa
 config.bind(',yt', 'spawn bash todo.sh -n a "Browse {url} @BROWSENET" ;; spawn notify-send "Saved to TODO list"')
 config.bind(',dl', 'hint links spawn kitty -e aria2c -d /home/imaan/Downloads {hint-url} ;; spawn notify-send "Download Has Been Started"')
 config.bind(',Dl', 'spawn kitty -e aria2c -d /home/imaan/Downloads {url} ;; spawn notify-send "Download Has Been Started"')
+config.bind(',qr', 'spawn --userscript ~/.local/share/qutebrowser/userscripts/qr')
 
 # Nord Theme
 #config.source('nord-qutebrowser.py')

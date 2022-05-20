@@ -104,7 +104,6 @@ myStartupHook :: X ()  -- Startups
 myStartupHook = do
   --  spawnOnce "workrave &"
     spawnOnce "/home/imaan/.xmonad/resolution.sh"
-    spawnOnce "picom --experimental-backends &"
     spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
     spawnOnce "numlockx &"
     spawnOnce "setxkbmap -option grp:alt_shift_toggle us,ir &"
@@ -115,6 +114,7 @@ myStartupHook = do
     spawnOnce "xautolock -time 10 -locker 'i3lock-fancy' -detectsleep &"
     spawnOnce "glava &"
     spawnOnce "blueman-applet &"
+    spawnOnce "picom --experimental-backends &"
     setWMName "LG3D"
 
 --Makes setting the spacingRaw simpler to write. The spacingRaw module adds a configurable amount of space around windows.
@@ -203,6 +203,7 @@ myManageHook = composeAll
      , className =? "splash"                        --> doFloat
      , className =? "toolbar"                       --> doFloat
      , className =? "copyq"                         --> doFloat
+     , className =? "Virt-manager"                  --> doFloat
      , title =? "Oracle VM VirtualBox Manager"      --> doFloat
      , title =? "Virtual Machine Manager"           --> doFloat
      , title =? "Dropdown"			    --> doFloat
