@@ -1,7 +1,3 @@
-import XMonad.Actions.Plane
-import XMonad.Actions.Promote
-import XMonad.Util.Dzen
-
 
     -- Base
 import XMonad
@@ -12,66 +8,50 @@ import qualified XMonad.StackSet as W
 import Control.Monad (liftM2)           -- For viewshift
 
     -- Actions
-import XMonad.Actions.CopyWindow (kill1)
-import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextWS, prevWS, toggleWS)
-import XMonad.Actions.GridSelect
--- import XMonad.Actions.MouseResize
-import XMonad.Actions.Promote
+import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextWS, prevWS, toggleWS, emptyWS)
+-- import XMonad.Actions.GridSelect  for grid menu selecting
+import XMonad.Actions.EasyMotion (selectWindow)
 import XMonad.Actions.RotSlaves (rotSlavesDown, rotAllDown)
-import XMonad.Actions.WindowGo (runOrRaise)
-import XMonad.Actions.WithAll (sinkAll, killAll)
-import qualified XMonad.Actions.Search as S
+-- import XMonad.Actions.WindowGo (runOrRaise)   search if window exist switch to that or run that
+import XMonad.Actions.WithAll (sinkAll)
 
     -- Data
-import Data.Char (isSpace, toUpper)
 import Data.Maybe (fromJust)
 import Data.Monoid
-import Data.Maybe (isJust)
 import Data.Tree
 import qualified Data.Map as M
 
     -- Hooks
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
 import XMonad.Hooks.EwmhDesktops  -- for some fullscreen events, also for xcomposite in obs.
-import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
-import XMonad.Hooks.ServerMode
+import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.WorkspaceHistory
 
     -- Layouts
-import XMonad.Layout.Accordion
-import XMonad.Layout.SimplestFloat
-import XMonad.Layout.Spiral
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns 
-import XMonad.Layout.Magnifier
-import XMonad.Layout.Fullscreen (fullscreenSupport)
-import XMonad.Layout.Grid
 import XMonad.Layout.Reflect
 
 
     -- Layouts modifiers
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
+import XMonad.Layout.Fullscreen (fullscreenSupport)
 import XMonad.Layout.Magnifier
 import XMonad.Layout.MultiToggle (mkToggle, single, EOT(EOT), (??))
-import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, MIRROR, NOBORDERS))
+import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, NOBORDERS))
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.ShowWName
-import XMonad.Layout.Simplest
 import XMonad.Layout.Spacing
-import XMonad.Layout.SubLayouts
-import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
-import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
    -- Utilities
 -- import XMonad.Util.Dmenu
-import XMonad.Util.EZConfig (additionalKeysP, checkKeymap)
-import XMonad.Util.NamedScratchpad
-import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
+import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.SpawnOnce
 import XMonad.Layout.Hidden (hiddenWindows, hideWindow, popOldestHiddenWindow)
 import XMonad.Util.Replace
@@ -102,8 +82,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()  -- Startups
 myStartupHook = do
-  --  spawnOnce "workrave &"
-    spawnOnce "/home/imaan/.xmonad/resolution.sh"
+    spawnOnce "/home/imaan/.xmonad/resolution.sh &"
     spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
     spawnOnce "numlockx &"
     spawnOnce "setxkbmap -option grp:alt_shift_toggle us,ir &"
@@ -113,7 +92,7 @@ myStartupHook = do
     spawnOnce "volnoti &"
     spawnOnce "xautolock -time 10 -locker 'i3lock-fancy' -detectsleep &"
     spawnOnce "glava &"
-    spawnOnce "blueman-applet &"
+    spawnOnce "blueberry-tray &"
     spawnOnce "picom --experimental-backends &"
     setWMName "LG3D"
 
@@ -131,16 +110,12 @@ mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 -- mySpacing n sets the gap size around the windows.
 tall     = renamed [Replace "tall"]
            $ smartBorders
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 12
            $ mySpacing' 6 
            $ ResizableTall 1 (3/100) (1/2) []
 
 mirrortall     = renamed [Replace "mirror tall"]
            $ smartBorders
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 12
            $ mySpacing' 6 
            $ Mirror (ResizableTall 1 (3/100) (1/2) [])
@@ -174,13 +149,11 @@ myShowWNameTheme = def
     }
 
 -- The layout hook
-myLayoutHook = avoidStruts $ windowArrange $ mkToggle (single REFLECTX) $ mkToggle (single REFLECTY) $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ hiddenWindows $ myDefaultLayout
+myLayoutHook = avoidStruts $ mkToggle (single REFLECTX) $ mkToggle (single REFLECTY) $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ hiddenWindows $ myDefaultLayout
              where
-               myDefaultLayout = withBorder myBorderWidth tall ||| withBorder myBorderWidth mirrortall ||| noBorders tabs ||| withBorder myBorderWidth threeCol
+               myDefaultLayout = withBorder myBorderWidth tall ||| withBorder myBorderWidth mirrortall ||| noBorders tabs ||| withBorder myBorderWidth threeCol 
 
--- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 "]
 myWorkspaces = [" chat ", " web ", " code ", " sys ", " vid ", " office ", " art "] 
--- myWorkspaces = [" one ", " two ", " three ", " four ", " five ", " six ", " seven "]
 
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
@@ -206,13 +179,13 @@ myManageHook = composeAll
      , className =? "Virt-manager"                  --> doFloat
      , title =? "Oracle VM VirtualBox Manager"      --> doFloat
      , title =? "Virtual Machine Manager"           --> doFloat
-     , title =? "Dropdown"			    --> doFloat
-     , className =? "sleek"			    --> doFloat
-     , className =? "Mate-calc"			    --> doFloat
+     , title =? "Dropdown"                          --> doFloat
+     , className =? "sleek"                         --> doFloat
+     , className =? "Mate-calc"                     --> doFloat
 
   -- Specific apps to appropriate workspace
      -- browsers
-     , className =? "firefox"              --> viewShift " web "
+     , className =? "firefox"                       --> viewShift " web "
      , className =? "qutebrowser"                   --> viewShift " web "
      -- code editors
      , className =? "VSCodium"                      --> doShift " code "
@@ -252,14 +225,7 @@ myManageHook = composeAll
 
 myConfig p = fullscreenSupport $ def
         { manageHook = myManageHook <+> manageDocks
-        -- Run xmonad commands from command line with "xmonadctl command". Commands include:
-        -- shrink, expand, next-layout, default-layout, restart-wm, xterm, kill, refresh, run,
-        -- focus-up, focus-down, swap-up, swap-down, swap-master, sink, quit-wm. You can run
-        -- "xmonadctl 0" to generate full list of commands written to ~/.xsession-errors.
-        , handleEventHook    = serverModeEventHookCmd
-                               <+> serverModeEventHook
-                               <+> serverModeEventHookF "XMONAD_PRINT" (io . putStrLn)
-                               <+> docksEventHook
+     -- , handleEventHook    = 
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
@@ -306,35 +272,37 @@ myKeys =
     -- Xmonad
           ("M-C-r", spawn "xmonad --recompile")                        -- Recompiles xmonad
         , ("M-S-r", spawn "xmonad --restart")                          -- Restarts xmonad
-        , ("M-S-q", io exitSuccess)                           	       -- Quits xmonad
-        , ("M-c", kill)                       	              	       -- Kill focused
-	, ("C-M1-x", spawn "xkill")				       -- Run Xkill
-	, ("M-S-o", restart "/home/imaan/.local/bin/obtoxmd" True)     -- Magic (switch to openbox with windows of current workspace)
+        , ("M-S-q", io exitSuccess)                                    -- Quits xmonad
+        , ("M-c", kill)                                                -- Kill focused
+        , ("C-M1-x", spawn "xkill")                                    -- Run Xkill
+        , ("M-S-o", restart "/home/imaan/.local/bin/obtoxmd" True)     -- Magic (switch to openbox with windows of current workspace)
+        , ("M-f", selectWindow def >>= (`whenJust` windows . W.focusWindow))
+
     
     -- Screen Locking
-        , ("M-p", spawn "i3lock-fancy ")	-- Lockscreen
+        , ("M-p", spawn "i3lock-fancy ")                               -- Lockscreen
 
     -- Run Prompt
-    --  , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"") -- Dmenu
+    --  , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")          -- Dmenu
         , ("M-S-<Return>", spawn "/home/imaan/.xmonad/rofi.sh launcher") -- Rofi launcher
-	, ("M-0", spawn "/home/imaan/.xmonad/rofi.sh powermenu") -- Rofi powermenu
+        , ("M-0", spawn "/home/imaan/.xmonad/rofi.sh powermenu") -- Rofi powermenu
 
     -- Useful Programs
         , ("M-<Return>", spawn (myTerminal))    -- Terminal
-        , ("M-b", spawn myBrowser)		-- Browser
-        , ("M-e", spawn "kitty --class=Pcmanfm nnn -ea") 	-- Filemanager nnn
-        , ("M-S-e", spawn "pcmanfm") 		-- Filemanager pcmanfm
-	, ("M-z", spawn "telegram-desktop") 	-- Telegram messenger
-	, ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown kitty")	-- Dropdown Terminal
+        , ("M-b", spawn myBrowser)              -- Browser
+        , ("M-e", spawn "kitty --class=Pcmanfm nnn -ea")       -- Filemanager nnn
+        , ("M-S-e", spawn "pcmanfm")                           -- Filemanager pcmanfm
+        , ("M-z", spawn "telegram-desktop")                    -- Telegram messenger
+        , ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown kitty")         -- Dropdown Terminal
 
      -- Workspaces
         , ("M-.", nextWS)  -- Move to next workspace
-	, ("M-S-.", moveTo Next EmptyWS)  -- Move to next empty workspace
-	, ("M-C-.", shiftTo Next EmptyWS)  -- Shift window to next empty workspace
+        , ("M-S-.", moveTo Next emptyWS)  -- Move to next empty workspace
+        , ("M-C-.", shiftTo Next emptyWS)  -- Shift window to next empty workspace
         , ("M-,", prevWS)  -- Move to prev workspace
-	, ("M-S-,", moveTo Prev EmptyWS) -- Move to prev empty workspace
-	, ("M-C-,", shiftTo Prev EmptyWS) -- Shift window to prev empty workspace
-	, ("M-<Tab>", toggleWS) -- Move to recent workspace
+        , ("M-S-,", moveTo Prev emptyWS) -- Move to prev empty workspace
+        , ("M-C-,", shiftTo Prev emptyWS) -- Shift window to prev empty workspace
+        , ("M-<Tab>", toggleWS) -- Move to recent workspace
 
     -- Floating windows
         , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
@@ -353,7 +321,6 @@ myKeys =
         , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
         , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
         , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
-        , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
         , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
 	, ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
   	, ("M-S-h", withFocused hideWindow)           -- Hide focused window
@@ -409,6 +376,6 @@ main = do
     -- Launching xmobar
     xmproc <- spawnPipe "xmobar ~/.config/xmobar/xmobarrc"
     replace
-    xmonad $ ewmh $ myConfig xmproc 
+    xmonad $ docks $ ewmhFullscreen $ ewmh $ myConfig xmproc 
 
 

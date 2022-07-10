@@ -63,6 +63,8 @@ settings:
     global: true
   content.geolocation:
     file://: true
+  content.media.audio_capture:
+    https://web.whatsapp.com: true
   content.notifications.enabled:
     https://bidzila.com: true
     https://ploudos.com: false
