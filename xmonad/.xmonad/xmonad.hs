@@ -33,6 +33,7 @@ import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns 
 import XMonad.Layout.Reflect
+import XMonad.Layout.IfMax
 
 
     -- Layouts modifiers
@@ -129,6 +130,9 @@ threeCol = renamed [Replace "threeCol"]
            $ mySpacing' 4
            $ ThreeColMid 1 (3/100) (1/2)
 
+ifmax = renamed [Replace "ifmax"]
+        $ IfMax 3 tall (threeCol)
+
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
                  , activeColor         = "#6272a4"
@@ -151,7 +155,7 @@ myShowWNameTheme = def
 -- The layout hook
 myLayoutHook = avoidStruts $ mkToggle (single REFLECTX) $ mkToggle (single REFLECTY) $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ hiddenWindows $ myDefaultLayout
              where
-               myDefaultLayout = withBorder myBorderWidth tall ||| withBorder myBorderWidth mirrortall ||| noBorders tabs ||| withBorder myBorderWidth threeCol 
+               myDefaultLayout = ifmax ||| withBorder myBorderWidth tall ||| withBorder myBorderWidth mirrortall ||| noBorders tabs ||| withBorder myBorderWidth threeCol
 
 myWorkspaces = [" chat ", " web ", " code ", " sys ", " vid ", " office ", " art "] 
 
@@ -207,6 +211,7 @@ myManageHook = composeAll
      , className =? "VirtualBox Manager"            --> doShift " office "
      , className =? "Virt-manager"                  --> doShift " office "
      , className =? "libreoffice"                   --> doShift " office "
+     , className =? "Logseq"                   --> doShift " office "
 
      -- art apps
      , className =? "Gimp-2.10"                     --> doShift " art "

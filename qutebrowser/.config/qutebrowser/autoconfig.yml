@@ -63,6 +63,7 @@ settings:
     global: true
   content.geolocation:
     file://: true
+    https://www.pishnahadevizheh.com: false
   content.media.audio_capture:
     https://web.whatsapp.com: true
   content.notifications.enabled:
