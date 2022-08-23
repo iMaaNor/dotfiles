@@ -211,7 +211,7 @@ myManageHook = composeAll
      , className =? "VirtualBox Manager"            --> doShift " office "
      , className =? "Virt-manager"                  --> doShift " office "
      , className =? "libreoffice"                   --> doShift " office "
-     , className =? "Logseq"                   --> doShift " office "
+     , className =? "Joplin"                        --> doShift " office "
 
      -- art apps
      , className =? "Gimp-2.10"                     --> doShift " art "
@@ -219,6 +219,7 @@ myManageHook = composeAll
      , className =? "krita"                         --> doShift " art "
      , className =? "kdenlive"                      --> doShift " art "
      , appName =? "Lunacy"                          --> doShift " art "
+     , appName =? "sonixd"                          --> doShift " art "
 
 
      -- Float dialogs
@@ -291,6 +292,7 @@ myKeys =
     --  , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")          -- Dmenu
         , ("M-S-<Return>", spawn "/home/imaan/.xmonad/rofi.sh launcher") -- Rofi launcher
         , ("M-0", spawn "/home/imaan/.xmonad/rofi.sh powermenu") -- Rofi powermenu
+        , ("M-/", spawn "rofi -show emoji -theme squared-nord") -- Rofi emoji
 
     -- Useful Programs
         , ("M-<Return>", spawn (myTerminal))    -- Terminal

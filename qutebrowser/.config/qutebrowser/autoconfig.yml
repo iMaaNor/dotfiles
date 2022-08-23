@@ -67,7 +67,9 @@ settings:
   content.media.audio_capture:
     https://web.whatsapp.com: true
   content.notifications.enabled:
+    http://rss.imaanor.xyz: true
     https://bidzila.com: true
+    https://demo.freshrss.org: false
     https://ploudos.com: false
   content.private_browsing:
     global: false
