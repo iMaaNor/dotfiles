@@ -70,13 +70,17 @@ settings:
     http://rss.imaanor.xyz: true
     https://bidzila.com: true
     https://demo.freshrss.org: false
+    https://dood.re: false
     https://ploudos.com: false
+    https://uploadrar.com: false
   content.private_browsing:
     global: false
   content.proxy:
     global: system
   fonts.completion.category:
     global: bold default_size default_family
+  qt.chromium.low_end_device_mode:
+    global: never
   qt.force_software_rendering:
     global: qt-quick
   statusbar.show:

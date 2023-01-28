@@ -14,6 +14,7 @@ import XMonad.Actions.EasyMotion (selectWindow)
 import XMonad.Actions.RotSlaves (rotSlavesDown, rotAllDown)
 -- import XMonad.Actions.WindowGo (runOrRaise)   search if window exist switch to that or run that
 import XMonad.Actions.WithAll (sinkAll)
+import XMonad.Actions.Submap
 
     -- Data
 import Data.Maybe (fromJust)
@@ -195,10 +196,8 @@ myManageHook = composeAll
      , className =? "VSCodium"                      --> doShift " code "
 
      -- chat apps
-     , className =? "TelegramDesktop"               --> doShift " chat "
+     , className =? "TelegramDesktop"               --> viewShift " chat "
      , className =? "discord"                       --> doShift " chat "
-     , className =? "whatsapp-nativefier-d40211"    --> doShift " chat "
-     , className =? "Element"                       --> doShift " chat "
 
      -- system apps
      , className =? "Pcmanfm"                       --> viewShift " sys "
@@ -219,7 +218,7 @@ myManageHook = composeAll
      , className =? "krita"                         --> doShift " art "
      , className =? "kdenlive"                      --> doShift " art "
      , appName =? "Lunacy"                          --> doShift " art "
-     , appName =? "sonixd"                          --> doShift " art "
+     , appName =? "sonixd"                          --> viewShift " art "
 
 
      -- Float dialogs
@@ -291,16 +290,20 @@ myKeys =
     -- Run Prompt
     --  , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"")          -- Dmenu
         , ("M-S-<Return>", spawn "/home/imaan/.xmonad/rofi.sh launcher") -- Rofi launcher
-        , ("M-0", spawn "/home/imaan/.xmonad/rofi.sh powermenu") -- Rofi powermenu
+    --  , ("M-0", spawn "/home/imaan/.xmonad/rofi.sh powermenu") -- Rofi powermenu
+        , ("M-0 0", spawn "/home/imaan/.xmonad/rofi.sh powermenu") 
+        , ("M-0 -", spawn "systemctl poweroff") 
+        , ("M-0 9", spawn "systemctl reboot") 
         , ("M-/", spawn "rofi -show emoji -theme squared-nord") -- Rofi emoji
 
     -- Useful Programs
         , ("M-<Return>", spawn (myTerminal))    -- Terminal
         , ("M-b", spawn myBrowser)              -- Browser
-        , ("M-e", spawn "kitty --class=Pcmanfm nnn -ea")       -- Filemanager nnn
-        , ("M-S-e", spawn "pcmanfm")                           -- Filemanager pcmanfm
+        , ("M-S-e", spawn "kitty --class=Pcmanfm nnn -ea")       -- Filemanager nnn
+        , ("M-e", spawn "pcmanfm")                           -- Filemanager pcmanfm
         , ("M-z", spawn "telegram-desktop")                    -- Telegram messenger
         , ("<F12>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown kitty")         -- Dropdown Terminal
+        , ("<F10>", spawn "tdrop -w 70% -x 15% -f '--title Dropdown' -s dropdown sleek")         -- Dropdown Terminal
 
      -- Workspaces
         , ("M-.", nextWS)  -- Move to next workspace

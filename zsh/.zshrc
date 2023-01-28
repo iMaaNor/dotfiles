@@ -159,14 +159,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 autoload -U compinit && compinit
 echo "\n\n"
 
-## Bash insulter (DT tube)
-if [ -f /etc/bash.command-not-found ]; then
-    . /etc/bash.command-not-found
-fi
-
 # Thefuck magnificent
 eval $(thefuck --alias)
 
 # pfetch | lolcat -f
-
-# figlet -f larry3d -w 200 "W i k i l i n u x f a" | lolcat -f
