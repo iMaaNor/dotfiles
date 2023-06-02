@@ -28,6 +28,7 @@ import XMonad.Hooks.EwmhDesktops  -- for some fullscreen events, also for xcompo
 import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.WorkspaceHistory
+import XMonad.Hooks.WindowSwallowing
 
     -- Layouts
 import XMonad.Layout.ResizableTile
@@ -68,7 +69,7 @@ myTerminal :: String
 myTerminal = "kitty" -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "qutebrowser"  -- Sets qutebrowser as browser
+myBrowser = "brave"  -- Sets qutebrowser as browser
 
 myBorderWidth :: Dimension
 myBorderWidth = 0           -- Sets border width for windows
@@ -93,9 +94,10 @@ myStartupHook = do
     spawnOnce "~/.fehbg &"
     spawnOnce "volnoti &"
     spawnOnce "xautolock -time 10 -locker 'i3lock-fancy' -detectsleep &"
-    spawnOnce "glava &"
+  --  spawnOnce "glava &"
     spawnOnce "blueberry-tray &"
     spawnOnce "picom --experimental-backends &"
+    spawnOnce "dropbox &"
     setWMName "LG3D"
 
 --Makes setting the spacingRaw simpler to write. The spacingRaw module adds a configurable amount of space around windows.
@@ -164,7 +166,7 @@ myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y 
 
 clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
     where i = fromJust $ M.lookup ws myWorkspaceIndices
-
+myHandleEventHook = swallowEventHook (className =? "kitty") (return True)
 myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
   -- doFloat for forcing to float a window
@@ -192,6 +194,8 @@ myManageHook = composeAll
      -- browsers
      , className =? "firefox"                       --> viewShift " web "
      , className =? "qutebrowser"                   --> viewShift " web "
+     , className =? "Microsoft-edge-dev"            --> viewShift " web "
+     , className =? "Brave-browser"                 --> viewShift " web "
      -- code editors
      , className =? "VSCodium"                      --> doShift " code "
 
@@ -230,7 +234,7 @@ myManageHook = composeAll
 
 myConfig p = fullscreenSupport $ def
         { manageHook = myManageHook <+> manageDocks
-     -- , handleEventHook    = 
+        , handleEventHook    = myHandleEventHook
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook

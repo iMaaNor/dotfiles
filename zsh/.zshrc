@@ -163,3 +163,4 @@ echo "\n\n"
 eval $(thefuck --alias)
 
 # pfetch | lolcat -f
+export PATH="$HOME/.local/bin:$PATH"

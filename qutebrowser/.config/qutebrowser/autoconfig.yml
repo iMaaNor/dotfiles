@@ -73,10 +73,12 @@ settings:
     https://dood.re: false
     https://ploudos.com: false
     https://uploadrar.com: false
+    https://uploadydl.com: false
+    https://www.pornachi.com: false
   content.private_browsing:
     global: false
   content.proxy:
-    global: system
+    global: socks://127.0.0.1:2080
   fonts.completion.category:
     global: bold default_size default_family
   qt.chromium.low_end_device_mode:
