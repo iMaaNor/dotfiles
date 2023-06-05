@@ -74,7 +74,7 @@ case $chosen in
     $logout)
 		ans=$(confirm_exit &)
 		if [[ $ans == "yes" || $ans == "YES" || $ans == "y" || $ans == "Y" ]]; then
-			killall xmonad-x86_64-linux
+			killall Hyprland
 		elif [[ $ans == "no" || $ans == "NO" || $ans == "n" || $ans == "N" ]]; then
 			exit 0
         else
