@@ -121,6 +121,7 @@ alias stopvirt="sudo systemctl stop {virtlogd,libvirtd,virtlogd-admin.socket,vir
 alias n="nnn -ea"
 alias noisereload="bash /home/imaan/.local/bin/echoCancelEnable.sh"
 alias emacs="emacs -nw"
+alias sshp="proxychains -q ssh"
 
 
 # For Transfer.sh alias

@@ -97,7 +97,10 @@ myStartupHook = do
   --  spawnOnce "glava &"
     spawnOnce "blueberry-tray &"
     spawnOnce "picom --experimental-backends &"
-    spawnOnce "dropbox &"
+  --  spawnOnce "dropbox &"
+    spawnOnce "nekoray &"
+    spawnOnce "joplin-desktop &"
+    spawnOnce "emote </dev/null &>/dev/null &"
     setWMName "LG3D"
 
 --Makes setting the spacingRaw simpler to write. The spacingRaw module adds a configurable amount of space around windows.
@@ -189,6 +192,7 @@ myManageHook = composeAll
      , title =? "Dropdown"                          --> doFloat
      , className =? "sleek"                         --> doFloat
      , className =? "Mate-calc"                     --> doFloat
+     , className =? "Emote"                     --> doFloat
 
   -- Specific apps to appropriate workspace
      -- browsers
