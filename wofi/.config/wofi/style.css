@@ -1,0 +1,61 @@
+window {
+    margin: 0px;
+    border: 0.1em solid #6d7379;
+    border-top: none;
+    background-color: #3d4145;
+    border-radius: 0em 0em 1.5em 1.5em;
+
+
+    }
+    
+    #input {
+    margin: 5px;
+    border: none;
+    color: #f8f8f2;
+    border-radius: 15px;
+    background-color: #4d5256;
+    }
+    
+    #inner-box {
+    margin: 5px;
+    border: none;
+    border-radius: 15px;
+    background-color: #3d4145;
+    }
+    
+    #outer-box {
+    margin: 5px;
+    border: none;
+    border-radius: 15px;
+    background-color: #3d4145;
+    }
+    
+    #scroll {
+    margin: 0px;
+    border-radius: 15px;
+    border: none;
+    }
+    
+    #text {
+    border-radius: 15px;
+    margin: 5px;
+    border: none;
+    color: #f8f8f2;
+    } 
+    
+    #entry.activatable #text {
+    color: #282a36;
+    }
+    
+    #entry > * {
+    color: #f8f8f2;
+    }
+    
+    #entry:selected {
+        border-radius: 15px;
+        background-color: #4d5256;
+    }
+    
+    #entry:selected #text {
+        border-radius: 15px;
+    }

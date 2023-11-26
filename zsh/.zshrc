@@ -112,15 +112,11 @@ source $ZSH/oh-my-zsh.sh
 alias smb-on="sudo ufw allow CIFS && sudo systemctl start smb.service nmb.service && sudo systemctl status smb.service nmb.service | grep Active: && sudo ufw status | grep CIFS"
 alias smb-off="sudo ufw deny CIFS && sudo systemctl stop smb.service nmb.service && sudo systemctl status smb.service nmb.service | grep Active: && sudo ufw status | grep CIFS"
 alias smb-status="sudo ufw status | grep CIFS && sudo systemctl status smb.service nmb.service | grep Active:"
-alias todo=todo.sh
 alias pch="proxychains -q"
-alias ecron="EDITOR=nvim crontab -e"
 alias pacup="sudo pacman -Syu"
 alias startvirt="sudo systemctl start {virtlogd,libvirtd}"
 alias stopvirt="sudo systemctl stop {virtlogd,libvirtd,virtlogd-admin.socket,virtlogd.socket,libvirtd-ro.socket,libvirtd-admin.socket,libvirtd.socket}"
-alias n="nnn -ea"
 alias noisereload="bash /home/imaan/.local/bin/echoCancelEnable.sh"
-alias emacs="emacs -nw"
 alias sshp="proxychains -q ssh"
 
 
@@ -158,10 +154,8 @@ ix() {
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 autoload -U compinit && compinit
-echo "\n\n"
 
 # Thefuck magnificent
 eval $(thefuck --alias)
 
-# pfetch | lolcat -f
-export PATH="$HOME/.local/bin:$PATH"
+pfetch | lolcat -f

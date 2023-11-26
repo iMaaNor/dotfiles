@@ -1,0 +1,249 @@
+
+;; SEPARATOR
+
+(defwidget separator []
+    (box :class "separator"
+        (label  :text "󰇙" :halign "center")))
+
+;; WORKSPACE 
+
+(defwidget oldworkspaces []
+    (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
+    (box :space-evenly true
+        (label :text "${workspaces}${current_workspace}" :visible false)
+        (for workspace in workspaces
+        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+            (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
+            (label :text "${workspace.id}")))))))
+
+(deflisten workspaces :initial '[{"id":"1","windows":0},{"id":"2","windows":0},{"id":"3","windows":0},{"id":"4","windows":0},{"id":"5","windows":0},{"id":"6","windows":0}]'
+    "bash ~/.config/eww/scripts/get-workspaces")
+(deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
+(defwidget workspaces []
+    (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
+    (box :space-evenly false :spacing 20 :valign "center" :halign "center"
+        (label :text "${workspaces}${current_workspace}" :visible false)
+	(button :onclick "hyprctl dispatch workspace 1"
+	    (box :class "workspace-entry ${workspaces[0].id == current_workspace ? "current" : ""} ${workspaces[0].windows > 0 ? "occupied" : "empty"}"
+		(label :text "  ")))
+	(button :onclick "hyprctl dispatch workspace 2"
+	    (box :class "workspace-entry ${workspaces[1].id == current_workspace ? "current" : ""} ${workspaces[1].windows > 0 ? "occupied" : "empty"}"
+	        (label :text "  ")))
+	(button :onclick "hyprctl dispatch workspace 3"
+	    (box :class "workspace-entry ${workspaces[2].id == current_workspace ? "current" : ""} ${workspaces[2].windows > 0 ? "occupied" : "empty"}"
+	        (label :text "  ")))
+	(button :onclick "hyprctl dispatch workspace 4"
+	    (box :class "workspace-entry ${workspaces[3].id == current_workspace ? "current" : ""} ${workspaces[3].windows > 0 ? "occupied" : "empty"}"
+	        (label :text "  ")))
+	(button :onclick "hyprctl dispatch workspace 5"
+	    (box :class "workspace-entry ${workspaces[4].id == current_workspace ? "current" : ""} ${workspaces[4].windows > 0 ? "occupied" : "empty"}"
+	        (label :text "  ")))
+	(button :onclick "hyprctl dispatch workspace 6"
+	    (box :class "workspace-entry ${workspaces[5].id == current_workspace ? "current" : ""} ${workspaces[5].windows > 0 ? "occupied" : "empty"}"
+	        (label :text "  "))))))
+
+;; WINDOW TITLE
+
+(deflisten window :initial "..." "sh ~/.config/eww/scripts/get-window-title")
+(defwidget window_w []
+    (box :halign "center" :valign "center"
+        (label :text "${window}")))
+
+;; ARCH LOGO / MENU
+
+(defwidget arch_menu []
+    (box :class "archmenu" :orientation "h" :halign "center" :valign "center"
+        (button :onclick "wofi --show drun &" "")))
+
+;; POWER MENU
+
+(defwidget power_menu []
+    (box :class "powermenu" :orientation "h" :halign "center" :valign "center"
+        (button :onclick "nwg-bar &" "")))
+
+;; TIME
+
+(defpoll timevalue :interval "1s"
+    :initial `date +%H:%M:%S`
+    `date +%H:%M:%S`)
+(defpoll datevalue :interval "1s"
+    :initial `date +'%A, %d %b %Y'`
+    `date +'%A, %d %b %Y'`)
+(defvar time_reveal false)
+(defwidget time[]
+    (eventbox :class "time" :onhover "eww update time_reveal=true" :onhoverlost "eww update time_reveal=false"
+        (box :space-evenly false
+            (revealer :transition "slideleft" :reveal {time_reveal} 
+                (label :text "${datevalue} | "))
+            (label :text {timevalue}))))
+
+;; VOLUME
+
+(defpoll checkmuted :interval "1s"
+    :initial 'pamixer --get-volume-human'
+    `pamixer --get-volume-human`)
+(defpoll volumevalue :interval "1s"
+    :initial "0"
+    `pamixer --get-volume`)
+(defvar volumereveal false)
+(defwidget volume []
+    (eventbox :onhover "eww update volumereveal=true" :onhoverlost "eww update volumereveal=false"
+        (box :class "volume" :space-evenly false :spacing 5 :orientation "h"
+          ;;  (label :text {checkmuted == "muted" ? "" : ""})
+          ;;  (revealer :transition "none" :reveal {!volumereveal}  
+               ;; (label :text {checkmuted == "muted" ? "" : volumevalue}))
+            (button :onclick "volumectl toggle-mute"
+                (circular-progress :class "circle" :width 25 :value volumevalue :start-at 25 :thickness 3.0 :clockwise true
+                    (label :text {checkmuted == "muted" ? "" : ""} :xalign 0.40 :yalign 0.53)))
+            (revealer :transition "slideright" :reveal {volumereveal} 
+                (scale :draw-value true :active true :width 50 :value volumevalue :min 0 :max 101 :round-digits 0 :orientation "h" 
+                    :onchange "volumectl set {}")))))
+            
+
+;; MEMORY
+
+(defpoll mem_used :interval "5s"
+    :initial `echo "$(free -h | grep "Mem" | awk '{print $3}')/8Gi"'`
+    `echo "$(free -h | grep "Mem" | awk '{print $3}')/8Gi"`)
+(defpoll mem_used_percentage :interval "5s"
+    :initial "0"
+    `free -m | grep Mem | awk '{printf "%.2f", $3/$2*100}'`)
+(defvar memory_reveal false)
+(defwidget memory []
+    (eventbox :onhover "eww update memory_reveal=true" :onhoverlost "eww update memory_reveal=false"
+        (box :class {mem_used_percentage < 51 ? "value_low" : mem_used_percentage > 50 && mem_used_percentage < 75 ? "value_medium" : "value_high"} 
+            :space-evenly false :spacing 5
+        ;;    (label :text "")
+        ;;    (label :text {mem_used})
+            (circular-progress :class "circle" :width 25 :value mem_used_percentage :start-at 25 :thickness 3.0 :clockwise true
+                (label :text "" :xalign 0.58 :yalign 0.55))
+            (revealer :transition "slideright" :reveal {memory_reveal} (label :text {mem_used})))))
+
+;; PACMAN UPDATE 
+
+(defpoll update_info :interval "60s"
+    :initial "0"
+    `checkupdates-with-aur | wc -l`)
+(defvar update_reveal false)
+(defwidget update []
+    (eventbox :onhover "eww update update_reveal=true" :onhoverlost "eww update update_reveal=false"
+        :visible {update_info > 0 ? true : false}
+    (button :onclick "kitty -e yay &"
+        (box :class "update" :space-evenly false :spacing 5
+            ;; (label :text {update_info > 0 ? "󰅢" : ""})
+            ;; (label :text {update_info > 0 ? update_info : ""})))
+            (circular-progress :class "circle" :width 25 :value 100 :start-at 25 :thickness 3.0 :clockwise true
+               (label :text "󰅢" :xalign 0.39 :yalign 0.5))
+            (revealer :transition "slideright" :reveal {update_reveal} (label :text "${update_info} pkgs"))))))
+
+;; NETWORK STATUS
+
+(defpoll net :interval "10s"
+:initial `nm-online -t 5 | awk '{print substr($3, 2, length($3) - 2)}'`
+`nm-online -t 5 | awk '{print substr($3, 2, length($3) - 2)}'`)
+
+(defwidget network []
+    (box :class "network" :space-evenly true :spacing 10
+        (label :text {net == "online" ? "󰲝" : "󰲜"})))
+
+;; CPU 
+
+(defpoll cpu_usage :interval "5s"
+    :initial "0"
+    `echo "$[100-$(vmstat 1 2|tail -1|awk '{print $15}')]"`)
+(defvar cpu_reveal false)
+(defwidget cpu []
+    (eventbox :onhover "eww update cpu_reveal=true" :onhoverlost "eww update cpu_reveal=false"
+        (box :class {cpu_usage < 51 ? "value_low" : cpu_usage > 50 && cpu_usage < 75 ? "value_medium" : "value_high"} 
+            :space-evenly false :spacing 5
+           ;; (label :text "")
+           ;; (label :text {cpu_usage})
+            (circular-progress :class "circle" :width 25 :value cpu_usage :start-at 25 :thickness 3.0 :clockwise true
+                (label :text "" :xalign 0.355 :yalign 0.545))
+            (revealer :transition "slideright" :reveal {cpu_reveal} (label :text "${cpu_usage}%")))))
+
+;; TEMP
+
+(defpoll cpu_temp :interval "5s"
+    :initial `0`
+    `sensors coretemp-isa-0000 | grep "Package" | awk '{print substr($4, 2, length($4-4))}'`)
+(defvar temp_reveal false)
+(defwidget temp []
+    (eventbox :onhover "eww update temp_reveal=true" :onhoverlost "eww update temp_reveal=false"
+        (box :class {cpu_temp < 51 ? "value_low" : cpu_temp > 50 && cpu_temp < 60 ? "value_medium" : "value_high"}  
+            :space-evenly false :spacing 5
+            ;; (label :text {cpu_temp < 50 ? "" : cpu_temp > 50 && cpu_temp < 60 ? "" : "" })
+            (circular-progress :class "circle" :width 25 :value cpu_temp :start-at 25 :thickness 3.0 :clockwise true
+                (label :text {cpu_temp < 51 ? "" : cpu_temp > 50 && cpu_temp < 60 ? "" : "" } 
+                :xalign 0.55 :yalign 0.545))
+            (revealer :transition "slideright" :reveal {temp_reveal} (label :text "${cpu_temp}°C")))))
+
+;; MUSIC
+
+(deflisten music_state :initial '{"status" : "stopped" , "artist" : "Unknown" , "title" : "Unknown" , "position" : "0" , "length" : "100"}'
+    `playerctl metadata -F -i brave --format '{"status" : "{{lc(status)}}" , "artist" : "{{artist}}" , "title" : "{{title}}" , "position" : "{{position}}" , "length" : "{{mpris:length}}"'}`)
+(defpoll music_players :interval "5s"
+    :initial "No players found"
+    `playerctl --list-all -i brave 2>&1`)
+(defvar music_reveal false)
+(defwidget music []
+    (revealer :transition "crossfade" :reveal {music_players == "No players found" ? false : true} :duration "1s" :halign "center" :valign "center"
+    (eventbox :onhover "eww update music_reveal=true" :onhoverlost "eww update music_reveal=false" 
+        :tooltip "${music_state.artist} - ${music_state.title}"
+        (box :orientation "h" :space-evenly false
+            (label :class "music_icon" :text "󰎅 | ")
+            (box :class "music_box" :space-evenly false :spacing 0 :orientation "v" :hexpand false :vexpand false :halign "start" :valign "start"
+                (box :class "music_up" :orientation "v" :space-evenly false :hexpand true :vexpand true :valign "end" :halign "fill" 
+                    (revealer :transition "slidedown" :reveal "${!music_reveal}"
+                        (box :class "music_title" :orientation "v" :halign "fill" :valign "fill"
+                            (label :text "${music_state.artist} - ${music_state.title}"
+                                :halign "center" :limit-width 25 :wrap true :show-truncated true)))
+                    (revealer :transition "slideup" :reveal {music_reveal}
+                        (box :class "music_buttons" :orientation "h" :halign "center" :space-evenly false :spacing 40
+                            (button :onclick "playerctl previous" "")
+                            (button :onclick "playerctl play-pause" 
+                                (label :text {music_state.status == "playing" ? "" : ""}))
+                            (button :onclick "playerctl next" ""))))
+                (box :class "music_scale"
+                (scale :value {music_state.position} :min 0 :max {music_state.length} :round-digits 0 :orientation "h" 
+                    :onchange "playerctl position $(expr {} / 1000000)")))))))
+;; MAIN BAR
+
+(defwidget bar []
+    (centerbox :class "wholebar"
+         :orientation "h" :halign "fill" :hexpand true
+            (box :class "leftside" :space-evenly false
+                :spacing 10 :orientation "h"
+                :halign "start" :hexpand true
+                (arch_menu)
+                (separator)
+                (temp)
+                (cpu)
+                (memory)
+                (volume)
+                (update)
+                (box :halign "center" :width 450 (music :halign "end")))
+            (box :class "center" :space-evenly false
+                :spacing 10 :orientation "h"
+                :halign "center" :hexpand true
+              ;;  (window_w)
+                (workspaces))
+            (box :class "rightside" :space-evenly false
+                :spacing 5 :orientation "h"
+                :halign "end" :hexpand true :vexpand true
+                ;; (network)
+                (systray :class "tray" :pack-direction "ltr")
+                (separator)
+                (time)
+                (separator)
+                (power_menu))))
+
+
+;; WINDOW
+
+(defwindow bar
+    :monitor 0
+    :stacking "fg"
+    :exclusive true
+    :geometry (geometry :width "95%" :height 40 :y "0px" :anchor "top center")
+    (bar))
