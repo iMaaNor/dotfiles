@@ -24,7 +24,7 @@ $urgency_item : #f87070;
 .leftside,
 .center,
 .rightside {
-  font-size: 0.95em;
+  font-size: 1.0em;
   font-weight: normal;
   font-family: "JetBrainsMono Nerd Font";
   color: $normal_item;
@@ -75,6 +75,11 @@ $urgency_item : #f87070;
 .time {
   font-weight: 600;
   font-size: 1.2em;
+}
+
+.zipkblayout {
+  font-size: 0.85em;
+  font-weight: 900;
 }
 
 .archmenu {

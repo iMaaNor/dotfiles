@@ -77,6 +77,23 @@
                 (label :text "${datevalue} | "))
             (label :text {timevalue}))))
 
+;; KEYBOARD LAYOUT
+(defpoll raw_kb_layout :interval "1s"
+    :initial ""
+    `hyprctl devices -j | gojq -r '.keyboards[] | select(.name == "sem-usb-keyboard") | .active_keymap'`)
+(defpoll zip_kb_layout :interval "1s"
+    :initial ""
+    `hyprctl devices -j | gojq -r '.keyboards[] | select(.name == "sem-usb-keyboard") | .active_keymap' | cut -c 1-2 | tr 'a-z' 'A-Z' | sed 's/PE/FA/g'`)
+(defvar kb_reveal false)
+(defwidget kb_layout[]
+    (eventbox :onhover "eww update kb_reveal=true" :onhoverlost "eww update kb_reveal=false"
+        (button :onclick "hyprctl switchxkblayout sem-usb-keyboard next"
+            (box :space-evenly false :spacing 5
+                (circular-progress :class "circle" :width 25 :value 100 :start-at 25 :thickness 3.0 :clockwise true
+                    (label :class "zipkblayout" :text {zip_kb_layout} :xalign 0.51))
+                (revealer :transition "slideright" :reveal {kb_reveal}
+                    (label :text {raw_kb_layout}))))))
+
 ;; VOLUME
 
 (defpoll checkmuted :interval "1s"
@@ -94,7 +111,7 @@
                ;; (label :text {checkmuted == "muted" ? "" : volumevalue}))
             (button :onclick "volumectl toggle-mute"
                 (circular-progress :class "circle" :width 25 :value volumevalue :start-at 25 :thickness 3.0 :clockwise true
-                    (label :text {checkmuted == "muted" ? "" : ""} :xalign 0.40 :yalign 0.53)))
+                    (label :text {checkmuted == "muted" ? "" : ""} :xalign 0.35 :yalign 0.53)))
             (revealer :transition "slideright" :reveal {volumereveal} 
                 (scale :draw-value true :active true :width 50 :value volumevalue :min 0 :max 101 :round-digits 0 :orientation "h" 
                     :onchange "volumectl set {}")))))
@@ -116,7 +133,7 @@
         ;;    (label :text "")
         ;;    (label :text {mem_used})
             (circular-progress :class "circle" :width 25 :value mem_used_percentage :start-at 25 :thickness 3.0 :clockwise true
-                (label :text "" :xalign 0.58 :yalign 0.55))
+                (label :text "󰘚" :xalign 0.45 :yalign 0.55))
             (revealer :transition "slideright" :reveal {memory_reveal} (label :text {mem_used})))))
 
 ;; PACMAN UPDATE 
@@ -221,6 +238,7 @@
                 (cpu)
                 (memory)
                 (volume)
+                (kb_layout)
                 (update)
                 (box :halign "center" :width 450 (music :halign "end")))
             (box :class "center" :space-evenly false
