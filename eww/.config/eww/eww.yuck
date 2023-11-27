@@ -89,10 +89,10 @@
     (eventbox :onhover "eww update kb_reveal=true" :onhoverlost "eww update kb_reveal=false"
         (button :onclick "hyprctl switchxkblayout sem-usb-keyboard next"
             (box :space-evenly false :spacing 5
-                (circular-progress :class "circle" :width 25 :value 100 :start-at 25 :thickness 3.0 :clockwise true
-                    (label :class "zipkblayout" :text {zip_kb_layout} :xalign 0.51))
                 (revealer :transition "slideright" :reveal {kb_reveal}
-                    (label :text {raw_kb_layout}))))))
+                    (label :text {raw_kb_layout}))
+                (circular-progress :class "circle" :width 25 :value 100 :start-at 25 :thickness 3.0 :clockwise true
+                    (label :class "zipkblayout" :text {zip_kb_layout} :xalign 0.51))))))
 
 ;; VOLUME
 
@@ -150,7 +150,7 @@
             ;; (label :text {update_info > 0 ? "󰅢" : ""})
             ;; (label :text {update_info > 0 ? update_info : ""})))
             (circular-progress :class "circle" :width 25 :value 100 :start-at 25 :thickness 3.0 :clockwise true
-               (label :text "󰅢" :xalign 0.39 :yalign 0.5))
+               (label :text "󰅢" :xalign 0.36 :yalign 0.5))
             (revealer :transition "slideright" :reveal {update_reveal} (label :text "${update_info} pkgs"))))))
 
 ;; NETWORK STATUS
@@ -214,7 +214,7 @@
                     (revealer :transition "slidedown" :reveal "${!music_reveal}"
                         (box :class "music_title" :orientation "v" :halign "fill" :valign "fill"
                             (label :text "${music_state.artist} - ${music_state.title}"
-                                :halign "center" :limit-width 25 :wrap true :show-truncated true)))
+                                :halign "center" :limit-width 20 :wrap true :show-truncated true)))
                     (revealer :transition "slideup" :reveal {music_reveal}
                         (box :class "music_buttons" :orientation "h" :halign "center" :space-evenly false :spacing 40
                             (button :onclick "playerctl previous" "")
@@ -231,25 +231,25 @@
          :orientation "h" :halign "fill" :hexpand true
             (box :class "leftside" :space-evenly false
                 :spacing 10 :orientation "h"
-                :halign "start" :hexpand true
+                :halign "start"
                 (arch_menu)
                 (separator)
                 (temp)
                 (cpu)
                 (memory)
                 (volume)
-                (kb_layout)
                 (update)
                 (box :halign "center" :width 450 (music :halign "end")))
             (box :class "center" :space-evenly false
                 :spacing 10 :orientation "h"
-                :halign "center" :hexpand true
+                :halign "center" 
               ;;  (window_w)
                 (workspaces))
             (box :class "rightside" :space-evenly false
                 :spacing 5 :orientation "h"
-                :halign "end" :hexpand true :vexpand true
+                :halign "end"
                 ;; (network)
+                (kb_layout)
                 (systray :class "tray" :pack-direction "ltr")
                 (separator)
                 (time)
