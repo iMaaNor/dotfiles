@@ -1,11 +1,15 @@
 # iMaaNor's Dotfiles
 
-This is my dot files that include bspwm and xmonad configs  
+This is my dot files that include bspwm and xmonad and Hyprland and other stuff configs  
 
 And yes i use stow for managing my Dotfiles  
+
+Use configs at your own risk i'm not responsible for any possible issues!    
   
   
 ## Screenshots  
+Hyprland  
+![hyprland-screenshot](https://github.com/iMaaNor/dotfiles/blob/master/hyprland-screenshot.png)  
 Xmonad  
 ![xmonad-screenshot](https://github.com/iMaaNor/dotfiles/blob/master/xmonad-screenshot.png)  
 Bspwm  
