@@ -116,7 +116,6 @@ alias pch="proxychains -q"
 alias pacup="sudo pacman -Syu"
 alias startvirt="sudo systemctl start {virtlogd,libvirtd}"
 alias stopvirt="sudo systemctl stop {virtlogd,libvirtd,virtlogd-admin.socket,virtlogd.socket,libvirtd-ro.socket,libvirtd-admin.socket,libvirtd.socket}"
-alias noisereload="bash /home/imaan/.local/bin/echoCancelEnable.sh"
 alias sshp="proxychains -q ssh"
 
 
