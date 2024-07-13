@@ -263,5 +263,5 @@
     :monitor 0
     :stacking "fg"
     :exclusive true
-    :geometry (geometry :width "95%" :height 40 :y "0px" :anchor "top center")
+    :geometry (geometry :width "95%" :height 45 :y "0px" :anchor "top center")
     (bar))
