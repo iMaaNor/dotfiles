@@ -21,6 +21,9 @@ $urgency_item : #f87070;
   padding-right: 1.0em;
 }
 
+.tray {
+}
+
 .leftside,
 .center,
 .rightside {
@@ -91,6 +94,11 @@ $urgency_item : #f87070;
   font-size: 1.5em;
 }
 
+.notifcenter {
+  margin-top: 0.1em;
+  font-size: 1.5em;
+}
+
 .separator {
   font-size: 1.5em;
 }
@@ -124,6 +132,9 @@ menu {
   border-radius: 0em 0em 0.7em 0.7em;
   background: $main;
   padding: 0.5em;
+  & :hover {
+    background-color: $bg;
+  }
 }
 
 menuitem {
@@ -158,3 +169,5 @@ tooltip {
   border: 0.1em solid #6d7379;
   border-radius: 0.7em;
 }
+
+

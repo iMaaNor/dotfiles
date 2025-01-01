@@ -7,15 +7,6 @@
 
 ;; WORKSPACE 
 
-(defwidget oldworkspaces []
-    (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
-    (box :space-evenly true
-        (label :text "${workspaces}${current_workspace}" :visible false)
-        (for workspace in workspaces
-        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
-            (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
-            (label :text "${workspace.id}")))))))
-
 (deflisten workspaces :initial '[{"id":"1","windows":0},{"id":"2","windows":0},{"id":"3","windows":0},{"id":"4","windows":0},{"id":"5","windows":0},{"id":"6","windows":0}]'
     "bash ~/.config/eww/scripts/get-workspaces")
 (deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
@@ -61,6 +52,16 @@
     (box :class "powermenu" :orientation "h" :halign "center" :valign "center"
         (button :onclick "nwg-bar &" "")))
 
+;; NOTIFICATION CENTER
+
+(defpoll checknotdisturb :interval "1s"
+    :initial 'swaync-client -D'
+    `swaync-client -D`)
+(defwidget notif_center []
+    (box :class "notifcenter" :orientation "h" :halign "center" :valign "center"
+        (button :width 25 :onclick "swaync-client -t" {checknotdisturb == "false" ? "" : ""})))
+
+
 ;; TIME
 
 (defpoll timevalue :interval "1s"
@@ -80,14 +81,14 @@
 ;; KEYBOARD LAYOUT
 (defpoll raw_kb_layout :interval "1s"
     :initial ""
-    `hyprctl devices -j | gojq -r '.keyboards[] | select(.name == "sem-usb-keyboard") | .active_keymap'`)
+    `hyprctl devices -j | gojq -r '.keyboards[] | select(.name == "gaming-keyboard") | .active_keymap'`)
 (defpoll zip_kb_layout :interval "1s"
     :initial ""
-    `hyprctl devices -j | gojq -r '.keyboards[] | select(.name == "sem-usb-keyboard") | .active_keymap' | cut -c 1-2 | tr 'a-z' 'A-Z' | sed 's/PE/FA/g'`)
+    `hyprctl devices -j | gojq -r '.keyboards[] | select(.name == "gaming-keyboard") | .active_keymap' | cut -c 1-2 | tr 'a-z' 'A-Z' | sed 's/PE/FA/g'`)
 (defvar kb_reveal false)
 (defwidget kb_layout[]
     (eventbox :onhover "eww update kb_reveal=true" :onhoverlost "eww update kb_reveal=false"
-        (button :onclick "hyprctl switchxkblayout sem-usb-keyboard next"
+        (button :onclick "hyprctl switchxkblayout gaming-keyboard next"
             (box :space-evenly false :spacing 5
                 (revealer :transition "slideright" :reveal {kb_reveal}
                     (label :text {raw_kb_layout}))
@@ -217,13 +218,13 @@
                                 :halign "center" :limit-width 20 :wrap true :show-truncated true)))
                     (revealer :transition "slideup" :reveal {music_reveal}
                         (box :class "music_buttons" :orientation "h" :halign "center" :space-evenly false :spacing 40
-                            (button :onclick "playerctl previous" "")
-                            (button :onclick "playerctl play-pause" 
+                            (button :onclick "playerctl -i brave previous" "")
+                            (button :onclick "playerctl -i brave play-pause" 
                                 (label :text {music_state.status == "playing" ? "" : ""}))
-                            (button :onclick "playerctl next" ""))))
+                            (button :onclick "playerctl -i brave next" ""))))
                 (box :class "music_scale"
                 (scale :value {music_state.position} :min 0 :max {music_state.length} :round-digits 0 :orientation "h" 
-                    :onchange "playerctl position $(expr {} / 1000000)")))))))
+                    :onchange "playerctl -i brave position $(expr {} / 1000000)")))))))
 ;; MAIN BAR
 
 (defwidget bar []
@@ -250,11 +251,12 @@
                 :halign "end"
                 ;; (network)
                 (kb_layout)
-                (systray :class "tray" :pack-direction "ltr")
+                (systray :class "tray" :orientation "h" :spacing 5)
                 (separator)
                 (time)
                 (separator)
-                (power_menu))))
+                (power_menu)
+                (notif_center))))
 
 
 ;; WINDOW
