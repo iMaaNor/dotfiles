@@ -71,7 +71,11 @@ return {
 						desc = "Edit Configs                                ",
 						key = "c",
 						key_format = " %s", -- remove default surrounding `[]`
-						action = "Telescope find_files cwd=~/.config/nvim",
+						action = function()
+							require("telescope.builtin").find_files({
+								cwd = vim.fn.stdpath("config"),
+							})
+						end,
 					},
 				},
 				footer = { "⚡️ " .. get_plugin_count() .. " Plugins Loaded." },

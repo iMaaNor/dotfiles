@@ -131,11 +131,23 @@ lspconfig.djlsp.setup({
 	on_attach = on_attach,
 })
 
+lspconfig.dockerls.setup({
+	on_attach = on_attach,
+})
+
+lspconfig.docker_compose_language_service.setup({
+	on_attach = on_attach, -- Use your existing on_attach function
+	cmd = { "docker-compose-langserver", "--stdio" }, -- Command to start the LSP
+	filetypes = { "yaml" }, -- Attach to YAML files
+	root_dir = lspconfig.util.root_pattern("docker-compose.yml"), -- Look for docker-compose.yml in the root directory
+})
+
 null_ls.setup({
 	sources = {
 		null_ls.builtins.diagnostics.flake8.with({
 			extra_args = { "--max-line-length=88" }, -- Specify line length
 		}),
 		null_ls.builtins.diagnostics.djlint,
+		null_ls.builtins.diagnostics.hadolint,
 	},
 })

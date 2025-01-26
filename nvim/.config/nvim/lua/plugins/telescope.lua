@@ -10,7 +10,15 @@ return {
 			{ "<leader>/", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
 			{ "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
 			{ "<leader>ss", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Search Document Symbols" },
-			{ "<leader>sc", "<cmd>Telescope find_files cwd=~/.config/nvim<cr>", desc = "Find Configs" },
+			{
+				"<leader>sc",
+				function()
+					require("telescope.builtin").find_files({
+						cwd = vim.fn.stdpath("config"),
+					})
+				end,
+				desc = "Find Configs",
+			},
 			{ "<leader>xt", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics (Telescope)" },
 		},
 	},
@@ -19,6 +27,12 @@ return {
 		build = "make",
 		config = function()
 			require("telescope").setup({
+				pickers = {
+					find_files = {
+						follow = true, -- Follow symlinks
+						--hidden = true, -- Show hidden files (optional)
+					},
+				},
 				extensions = {
 					fzf = {
 						fuzzy = true, -- false will only do exact matching

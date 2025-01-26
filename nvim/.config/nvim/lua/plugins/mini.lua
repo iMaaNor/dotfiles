@@ -9,6 +9,6 @@ return {
 		require("mini.splitjoin").setup()
 		require("mini.jump2d").setup()
 		require("mini.animate").setup()
-		--        require("mini.notify").setup()
+		--require("mini.notify").setup()
 	end,
 }
