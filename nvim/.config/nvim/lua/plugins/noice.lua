@@ -39,6 +39,18 @@ return {
 					filter = { event = "msg_show", find = " fewer lines?" },
 					opts = { skip = true },
 				},
+				{
+					filter = { event = "msg_show", find = " lines? less" },
+					opts = { skip = true },
+				},
+				{
+					filter = { event = "msg_show", find = " lines? yanked" },
+					opts = { skip = true },
+				},
+				{
+					filter = { event = "msg_show", find = " changes?" },
+					opts = { skip = true },
+				},
 			},
 		})
 	end,
